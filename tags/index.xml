@@ -1,14 +1,60 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Chenyang&#39;s Blog</title>
+    <title>Tags on lcycug</title>
     <link>https://lcycug.github.io/tags/</link>
-    <description>Recent content in Tags on Chenyang&#39;s Blog</description>
+    <description>Recent content in Tags on lcycug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Tue, 14 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://lcycug.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>blog</title>
+      <link>https://lcycug.github.io/tags/blog/</link>
+      <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://lcycug.github.io/tags/blog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>flag</title>
+      <link>https://lcycug.github.io/tags/flag/</link>
+      <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://lcycug.github.io/tags/flag/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vlog</title>
+      <link>https://lcycug.github.io/tags/vlog/</link>
+      <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://lcycug.github.io/tags/vlog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>first</title>
+      <link>https://lcycug.github.io/tags/first/</link>
+      <pubDate>Sun, 12 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://lcycug.github.io/tags/first/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>test</title>
+      <link>https://lcycug.github.io/tags/test/</link>
+      <pubDate>Sun, 12 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://lcycug.github.io/tags/test/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

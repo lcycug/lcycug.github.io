@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>lcycug</title>
-    <link>https://lcycug.github.io/</link>
-    <description>Recent content on lcycug</description>
+    <title>blog on lcycug</title>
+    <link>https://lcycug.github.io/tags/blog/</link>
+    <description>Recent content in blog on lcycug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 14 Jan 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://lcycug.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://lcycug.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,24 +20,6 @@
       <description>It is a good practice to set goals at the beginning of a new year. Goals lead us to a better end usually.
 I read a story in 2019 saying the best way to learn something is to convey to others. So in the new year of 2020, I wanna be a person to share with others both knowledge and life.
 At the mention of sharing, the vlog might be the most popular way on the earth that transfers more realistic stuff than words.</description>
-    </item>
-    
-    <item>
-      <title>My First Post</title>
-      <link>https://lcycug.github.io/post/my-first-post/</link>
-      <pubDate>Sun, 12 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://lcycug.github.io/post/my-first-post/</guid>
-      <description>This is my first post.</description>
-    </item>
-    
-    <item>
-      <title>Me</title>
-      <link>https://lcycug.github.io/about/me/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://lcycug.github.io/about/me/</guid>
-      <description>What do you know about me?</description>
     </item>
     
   </channel>

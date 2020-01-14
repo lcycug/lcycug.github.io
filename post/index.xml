@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Chenyang&#39;s Blog</title>
+    <title>Posts on lcycug</title>
     <link>https://lcycug.github.io/post/</link>
-    <description>Recent content in Posts on Chenyang&#39;s Blog</description>
+    <description>Recent content in Posts on lcycug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 14 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://lcycug.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>2020 Flags</title>
+      <link>https://lcycug.github.io/post/2020-flags/</link>
+      <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://lcycug.github.io/post/2020-flags/</guid>
+      <description>It is a good practice to set goals at the beginning of a new year. Goals lead us to a better end usually.
+I read a story in 2019 saying the best way to learn something is to convey to others. So in the new year of 2020, I wanna be a person to share with others both knowledge and life.
+At the mention of sharing, the vlog might be the most popular way on the earth that transfers more realistic stuff than words.</description>
+    </item>
     
     <item>
       <title>My First Post</title>
