@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Color Your World</title>
+    <title>Sean&#39;s website</title>
     <link>https://blog.lcycug.live/posts/</link>
-    <description>John Doe&#39;s personal website</description>
+    <description>Sean&#39;s personal website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>Copyright © 2021, John Doe; All rights reserved.</copyright>
+    <copyright>Copyright © 2021, Sean Lee; All rights reserved.</copyright>
     <lastBuildDate>Sun, 08 Aug 2021 09:11:29 +0800</lastBuildDate><atom:link href="https://blog.lcycug.live/posts/index.xml" rel="self" type="application/rss+xml" />
       <item>
         <title>My First Post</title>
