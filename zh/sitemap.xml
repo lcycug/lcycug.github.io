@@ -4,27 +4,10 @@
   
   
     <url>
-      <loc>https://blog.lcycug.live/posts/my-second-post/</loc>
+      <loc>https://blog.lcycug.live/zh/posts/my-first-post/</loc>
       
       
-        <lastmod>2021-08-08T13:48:46+08:00</lastmod>
-      
-      
-      
-      
-      
-      
-      
-      
-    </url>
-    
-  
-  
-    <url>
-      <loc>https://blog.lcycug.live/posts/my-first-post/</loc>
-      
-      
-        <lastmod>2021-08-08T09:11:29+08:00</lastmod>
+        <lastmod>2021-08-09T08:31:28+08:00</lastmod>
       
       
       
@@ -35,15 +18,15 @@
         
           <xhtml:link
             rel="alternate"
-            hreflang="zh"
-            href="https://blog.lcycug.live/zh/posts/my-first-post/"
+            hreflang="en"
+            href="https://blog.lcycug.live/posts/my-first-post/"
             />
         
         
         <xhtml:link
           rel="alternate"
-          hreflang="en"
-          href="https://blog.lcycug.live/posts/my-first-post/"
+          hreflang="zh"
+          href="https://blog.lcycug.live/zh/posts/my-first-post/"
           />
       
       
@@ -52,7 +35,7 @@
   
   
     <url>
-      <loc>https://blog.lcycug.live/about/</loc>
+      <loc>https://blog.lcycug.live/zh/about/</loc>
       
       
       
@@ -64,15 +47,15 @@
         
           <xhtml:link
             rel="alternate"
-            hreflang="zh"
-            href="https://blog.lcycug.live/zh/about/"
+            hreflang="en"
+            href="https://blog.lcycug.live/about/"
             />
         
         
         <xhtml:link
           rel="alternate"
-          hreflang="en"
-          href="https://blog.lcycug.live/about/"
+          hreflang="zh"
+          href="https://blog.lcycug.live/zh/about/"
           />
       
       
@@ -81,7 +64,7 @@
   
   
     <url>
-      <loc>https://blog.lcycug.live/contact/</loc>
+      <loc>https://blog.lcycug.live/zh/contact/</loc>
       
       
       
@@ -93,15 +76,15 @@
         
           <xhtml:link
             rel="alternate"
-            hreflang="zh"
-            href="https://blog.lcycug.live/zh/contact/"
+            hreflang="en"
+            href="https://blog.lcycug.live/contact/"
             />
         
         
         <xhtml:link
           rel="alternate"
-          hreflang="en"
-          href="https://blog.lcycug.live/contact/"
+          hreflang="zh"
+          href="https://blog.lcycug.live/zh/contact/"
           />
       
       
