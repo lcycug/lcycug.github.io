@@ -79,33 +79,4 @@
     </url>
     
   
-  
-    <url>
-      <loc>https://blog.lcycug.live/contact/</loc>
-      
-      
-      
-      
-      
-      
-      
-      
-        
-          <xhtml:link
-            rel="alternate"
-            hreflang="zh"
-            href="https://blog.lcycug.live/zh/contact/"
-            />
-        
-        
-        <xhtml:link
-          rel="alternate"
-          hreflang="en"
-          href="https://blog.lcycug.live/contact/"
-          />
-      
-      
-    </url>
-    
-  
 </urlset>

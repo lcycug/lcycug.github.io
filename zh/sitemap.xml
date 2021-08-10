@@ -64,7 +64,7 @@
   
   
     <url>
-      <loc>https://blog.lcycug.live/zh/contact/</loc>
+      <loc>https://blog.lcycug.live/zh/search/</loc>
       
       
       
@@ -77,14 +77,14 @@
           <xhtml:link
             rel="alternate"
             hreflang="en"
-            href="https://blog.lcycug.live/contact/"
+            href="https://blog.lcycug.live/search/"
             />
         
         
         <xhtml:link
           rel="alternate"
           hreflang="zh"
-          href="https://blog.lcycug.live/zh/contact/"
+          href="https://blog.lcycug.live/zh/search/"
           />
       
       
