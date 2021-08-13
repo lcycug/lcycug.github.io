@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2021, Sean Lee; All rights reserved.</copyright>
-    <lastBuildDate>Sun, 08 Aug 2021 13:48:46 +0800</lastBuildDate><atom:link href="https://blog.lcycug.live/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Aug 2021 07:53:21 +0800</lastBuildDate><atom:link href="https://blog.lcycug.live/posts/index.xml" rel="self" type="application/rss+xml" />
+      <item>
+        <title>LWC as a Service</title>
+        <link>https://blog.lcycug.live/posts/lwc-as-a-service/</link>
+        <pubDate>Fri, 13 Aug 2021 07:53:21 +0800</pubDate>
+        
+        <guid>https://blog.lcycug.live/posts/lwc-as-a-service/</guid>
+        <description>force-app/main/default/aura/ParentAuraCmp
+ force-app/main/default/aura/ParentAuraCmp/ParentAuraCmpController.js
+/** * @author Sean Lee * @date 2021-08-13 * @description This component is used to */ ({ checkAccountEligibility: function (component) { let idAccount = component.get(&amp;#34;v.recordId&amp;#34;), service = component.find(&amp;#34;service&amp;#34;), { checkEligibilityStatus } = service; if (checkEligibilityStatus) { checkEligibilityStatus(idAccount).then((response) =&amp;gt; { component.set(&amp;#34;v.boolEligible&amp;#34;, response === true); }); } } }); force-app/main/default/aura/ParentAuraCmp/ParentAuraCmp.cmp
+&amp;lt;!-- - @author Sean Lee - @date 2021-08-13 - @description This component is used to --&amp;gt; &amp;lt;aura:component description=&amp;#34;ParentAuraCmp&amp;#34; controller=&amp;#34;AccountService&amp;#34; implements=&amp;#34;,flexipage:availableForRecordHome,force:hasRecordId&amp;#34; access=&amp;#34;global&amp;#34;&amp;gt; &amp;lt;aura:attribute name=&amp;#34;boolEligible&amp;#34; type=&amp;#34;Boolean&amp;#34; default=&amp;#34;false&amp;#34; /&amp;gt; &amp;lt;aura:handler name=&amp;#34;init&amp;#34; value=&amp;#34;{!</description>
+      </item>
+    
       <item>
         <title>My Second Post</title>
         <link>https://blog.lcycug.live/posts/my-second-post/</link>

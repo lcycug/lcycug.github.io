@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh" data-mode="light">
+  <head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Hugo 0.87.0">
+<meta name="theme" content="Color Your World -- gitlab.com/rmaguiar/hugo-theme-color-your-world">
+<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+<link rel="manifest" href="/img/site.webmanifest">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<title>LWC服务 | 肖恩的博客</title>
+
+
+<meta name="author" content="Sean Lee">
+
+
+
+<meta name="robots" content="index follow">
+
+
+
+
+  
+    <link rel="canonical" href="https://blog.lcycug.live/zh/posts/lwc-as-a-service/">
+  
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="肖恩的博客">
+<meta property="og:title" content="LWC服务">
+
+  <meta property="og:url" content="https://blog.lcycug.live/zh/posts/lwc-as-a-service/">
+
+
+
+
+
+
+
+
+  <meta property="og:type" content="article">
+  
+  
+    <meta property="article:published_time" content="2021-08-13">
+    <meta property="article:modified_time" content="2021-08-13">
+    <meta property="og:updated_time" content="2021-08-13">
+  
+
+  
+  
+  
+    <meta name="twitter:creator" content="@&lt;username&gt;">
+  
+  
+
+  <meta name="twitter:site" content="@&lt;username&gt;">
+
+
+
+
+
+
+
+  <meta name="twitter:dnt" content="on">
+
+
+
+
+
+
+
+
+
+  
+    <link rel="alternate" hreflang="en" href="https://blog.lcycug.live/posts/lwc-as-a-service/" title="English">
+  
+
+
+
+
+<meta name="theme-color" content="#222">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "mainEntityOfPage": {
+        "@type": "WebSite",
+        "@id": "https:\/\/blog.lcycug.live"
+      },
+      "headline": "LWC服务",
+      "description": "",
+      
+      "url": "https:\/\/blog.lcycug.live\/zh\/posts\/lwc-as-a-service\/",
+      "inLanguage": "zh",
+      "datePublished": "2021-08-13",
+      "dateModified": "2021-08-13",
+      "wordCount" : "241",
+      "publisher": {
+        "@type": "Person",
+        "name": "Sean Lee"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Sean Lee",
+        "description": "Some indescribable horror.",
+        "sameAs": ["https://facebook.com/\u003cusername\u003e","https://www.flickr.com/\u003cusername\u003e","https://open.audio/\u003cusername\u003e","https://github.com/\u003cusername\u003e","https://gitlab.com/\u003cusername\u003e","https://www.instagram.com/\u003cusername\u003e","https://keybase.io/\u003cusername\u003e","https://www.linkedin.com/in/\u003cusername\u003e","https://mastodon.social/\u003cusername\u003e","https://mastodon.too/\u003cusername\u003e","https://yet.another.one/\u003cusername\u003e","https://matrix.to/#/\u003cusername\u003e:matrix.org","https://matrix.to/#/\u003cusername\u003e:other.org","https://medium.com/\u003cusername\u003e","https://peertube.something/accounts/\u003cusername\u003e","https://pixelfed.social/\u003cusername\u003e","https://www.reddit.com/user/\u003cusername\u003e","https://app.element.io/#/user/\u003cusername\u003e:matrix.org","https://www.snapchat.com/add/\u003cusername\u003e","https://soundcloud.com/\u003cusername\u003e","https://stackoverflow.com/users/\u003cusername\u003e","https://www.strava.com/athletes/\u003cusername\u003e","https://t.me/\u003cusername\u003e","https://www.twitch.tv/\u003cusername\u003e","https://twitter.com/\u003cusername\u003e","https://vimeo.com/\u003cusername\u003e","https://wa.me/\u003cnumber\u003e","https://www.xing.com/profile/\u003cusername\u003e","https://youtube.com/channel/\u003cchannelid\u003e"]
+      }
+    }
+  </script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://blog.lcycug.live/css/main.min.8e05f798b394986601b0549619b019d4fb9158b099e78d9b0070ef59a3ef192e.css" integrity="sha256-jgX3mLOUmGYBsFSWGbAZ1PuRWLCZ542bAHDvWaPvGS4=" crossorigin="anonymous">
+
+
+
+<noscript>
+
+  
+  
+
+  
+    <meta name="theme-color" content="#1dbc91" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#1f676b" media="(prefers-color-scheme: light)">
+  
+
+  
+  <link rel="stylesheet" href="https://blog.lcycug.live/css/noscript.min.9bacd85b6f1d42296c56d3b8457d0c13a4e7f415c4ca5fc8affb6ed6b39cad72.css" integrity="sha256-m6zYW28dQilsVtO4RX0ME6Tn9BXEyl/Ir/tu1rOcrXI=" crossorigin="anonymous">
+
+</noscript>
+
+
+
+<link rel="preload" href="/fonts/open-sans-v17-latin-700.woff2" as="font" crossorigin="anonymous">
+<link rel="preload" href="/fonts/open-sans-v17-latin-italic.woff2" as="font" crossorigin="anonymous">
+<link rel="preload" href="/fonts/open-sans-v17-latin-regular.woff2" as="font" crossorigin="anonymous">
+<link rel="preload" href="/fonts/oswald-v29-latin-700.woff2" as="font" crossorigin="anonymous">
+
+
+
+
+
+
+
+
+
+<link rel="me" href="https://facebook.com/%3cusername%3e"> 
+<link rel="me" href="https://www.flickr.com/%3cusername%3e"> 
+<link rel="me" href="https://open.audio/%3cusername%3e"> 
+<link rel="me" href="https://github.com/%3cusername%3e"> 
+<link rel="me" href="https://gitlab.com/%3cusername%3e"> 
+<link rel="me" href="https://www.instagram.com/%3cusername%3e"> 
+<link rel="me" href="https://keybase.io/%3cusername%3e"> 
+<link rel="me" href="https://www.linkedin.com/in/%3cusername%3e"> 
+<link rel="me" href="https://mastodon.social/%3cusername%3e"> 
+<link rel="me" href="https://mastodon.too/%3cusername%3e"> 
+<link rel="me" href="https://yet.another.one/%3cusername%3e"> 
+<link rel="me" href="https://matrix.to/#/%3cusername%3e:matrix.org"> 
+<link rel="me" href="https://matrix.to/#/%3cusername%3e:other.org"> 
+<link rel="me" href="https://medium.com/%3cusername%3e"> 
+<link rel="me" href="https://peertube.something/accounts/%3cusername%3e"> 
+<link rel="me" href="https://pixelfed.social/%3cusername%3e"> 
+<link rel="me" href="https://www.reddit.com/user/%3cusername%3e"> 
+<link rel="me" href="https://app.element.io/#/user/%3cusername%3e:matrix.org"> 
+<link rel="me" href="https://www.snapchat.com/add/%3cusername%3e"> 
+<link rel="me" href="https://soundcloud.com/%3cusername%3e"> 
+<link rel="me" href="https://stackoverflow.com/users/%3cusername%3e"> 
+<link rel="me" href="https://www.strava.com/athletes/%3cusername%3e"> 
+<link rel="me" href="https://t.me/%3cusername%3e"> 
+<link rel="me" href="https://www.twitch.tv/%3cusername%3e"> 
+<link rel="me" href="https://twitter.com/%3cusername%3e"> 
+<link rel="me" href="https://vimeo.com/%3cusername%3e"> 
+<link rel="me" href="https://wa.me/%3cnumber%3e"> 
+<link rel="me" href="https://www.xing.com/profile/%3cusername%3e"> 
+<link rel="me" href="https://youtube.com/channel/%3cchannelid%3e"> 
+
+
+<script src="https://blog.lcycug.live/js/main.min.dd78ee91e8ad16d9570adefe0fb4135123f73a1fe7c44b04771ad23909893d00.js" integrity="sha256-3XjukeitFtlXCt7&#43;D7QTUSP3Oh/nxEsEdxrSOQmJPQA=" crossorigin="anonymous"></script>
+
+  </head>
+
+  <body>
+
+    <header>
+      
+
+  <a href="/zh">肖恩的博客</a>
+
+
+
+
+  
+    <nav aria-label="Main menu.">
+      <ul>
+        
+          <li>
+            <a class="btn" href="/zh/about/">关于</a>
+          </li>
+        
+          <li>
+            <a class="btn" href="/zh/posts/">文章列表</a>
+          </li>
+        
+          <li>
+            <a class="btn" href="/zh/contact/">联系方式</a>
+          </li>
+        
+      </ul>
+    </nav>
+  
+
+
+    </header>
+
+    <div class="filler">
+      
+
+  <main>
+    <article>
+      <header>
+        
+        <h1>LWC服务</h1>
+
+        
+          <p>
+            
+              首次发布于 <time datetime="2021-08-13">2021-08-13</time>
+            
+          </p>
+        
+        
+        
+        
+      </header>
+    
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+<p>force-app/main/default/aura/ParentAuraCmp</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    <img
+      
+      loading="lazy"
+      src="image-20210813125730158.png"
+      alt="image-20210813125730158"
+    />
+
+  
+
+</p>
+<p>force-app/main/default/aura/ParentAuraCmp/ParentAuraCmpController.js</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-javascript" data-lang="javascript"><span class="cm">/**
+</span><span class="cm"> * @author Sean Lee
+</span><span class="cm"> * @date 2021-08-13
+</span><span class="cm"> * @description This component is used to
+</span><span class="cm"> */</span>
+<span class="p">({</span>
+    <span class="nx">checkAccountEligibility</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">component</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">idAccount</span> <span class="o">=</span> <span class="nx">component</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;v.recordId&#34;</span><span class="p">),</span>
+            <span class="nx">service</span> <span class="o">=</span> <span class="nx">component</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&#34;service&#34;</span><span class="p">),</span>
+            <span class="p">{</span> <span class="nx">checkEligibilityStatus</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">service</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">checkEligibilityStatus</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">checkEligibilityStatus</span><span class="p">(</span><span class="nx">idAccount</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+                <span class="nx">component</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&#34;v.boolEligible&#34;</span><span class="p">,</span> <span class="nx">response</span> <span class="o">===</span> <span class="kc">true</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre></div><p>force-app/main/default/aura/ParentAuraCmp/ParentAuraCmp.cmp</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!--
+</span><span class="c"> - @author Sean Lee
+</span><span class="c"> - @date 2021-08-13
+</span><span class="c"> - @description This component is used to
+</span><span class="c"> --&gt;</span>
+<span class="p">&lt;</span><span class="nt">aura:component</span> <span class="na">description</span><span class="o">=</span><span class="s">&#34;ParentAuraCmp&#34;</span> <span class="na">controller</span><span class="o">=</span><span class="s">&#34;AccountService&#34;</span> <span class="na">implements</span><span class="o">=</span><span class="s">&#34;,flexipage:availableForRecordHome,force:hasRecordId&#34;</span> <span class="na">access</span><span class="o">=</span><span class="s">&#34;global&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">aura:attribute</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;boolEligible&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;Boolean&#34;</span> <span class="na">default</span><span class="o">=</span><span class="s">&#34;false&#34;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">aura:handler</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;init&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;{!this}&#34;</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;{!c.checkAccountEligibility}&#34;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">c:accountEligibilityService</span> <span class="na">aura:id</span><span class="o">=</span><span class="s">&#34;service&#34;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Account Eligibility Status<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>{!v.boolEligible}<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">aura:component</span><span class="p">&gt;</span>
+</code></pre></div><p>force-app/main/default/lwc/accountEligibilityService</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    <img
+      
+      loading="lazy"
+      src="image-20210813125920860.png"
+      alt="image-20210813125920860"
+    />
+
+  
+
+</p>
+<p>force-app/main/default/lwc/accountEligibilityService/accountEligibilityService.html</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!--
+</span><span class="c"> - @author Sean Lee
+</span><span class="c"> - @date 2021-08-13
+</span><span class="c"> - @description This component is used to
+</span><span class="c"> --&gt;</span>
+<span class="c">&lt;!-- Account Eligibility Service --&gt;</span>
+<span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</code></pre></div><p>force-app/main/default/lwc/accountEligibilityService/accountEligibilityService.js</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-javascript" data-lang="javascript"><span class="cm">/**
+</span><span class="cm"> * @author Sean Lee
+</span><span class="cm"> * @date 2021-08-13
+</span><span class="cm"> * @description This component is used to
+</span><span class="cm"> */</span>
+<span class="kr">import</span> <span class="nx">checkEligibility</span> <span class="nx">from</span> <span class="s2">&#34;@salesforce/apex/AccountService.checkEligibility&#34;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ShowToastEvent</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;lightning/platformShowToastEvent&#34;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">checkEligibilityStatus</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">idAccount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">checkEligibility</span><span class="p">({</span> <span class="nx">idAccount</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">response</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span>
+        <span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">error</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="nx">dispatchEvent</span><span class="p">(</span>
+                <span class="k">new</span> <span class="nx">ShowToastEvent</span><span class="p">({</span>
+                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Error happened during checking Account Eligibility&#34;</span><span class="p">,</span>
+                    <span class="nx">message</span><span class="o">:</span> <span class="nx">error</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">message</span><span class="p">,</span>
+                    <span class="nx">variant</span><span class="o">:</span> <span class="s2">&#34;warning&#34;</span>
+                <span class="p">})</span>
+            <span class="p">);</span>
+        <span class="p">});</span>
+<span class="p">};</span>
+<span class="kr">export</span> <span class="p">{</span> <span class="nx">checkEligibilityStatus</span> <span class="p">};</span>
+</code></pre></div><p>force-app/main/default/classes/AccountService.cls</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * @author Sean Lee
+</span><span class="cm"> * @date 2021-08-13
+</span><span class="cm"> * @description This class is used to service as an AccountService.
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="n">with</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">AccountService</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">ELIGIBLE_ACCOUNT_NUMBER_LIST</span> <span class="o">=</span> <span class="n">Label</span><span class="o">.</span><span class="na">Eligible_Account_Number_List</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="n">Constants</span><span class="o">.</span><span class="na">SEMI_COLON_REGEXP_SPACE_IGNORED</span><span class="o">);</span>
+    <span class="nd">@AuraEnabled</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Boolean</span> <span class="nf">checkEligibility</span><span class="o">(</span><span class="n">Id</span> <span class="n">idAccount</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">isNotBlank</span><span class="o">(</span><span class="n">idAccount</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">[</span><span class="n">SELECT</span> <span class="nf">COUNT</span><span class="o">()</span> <span class="n">FROM</span> <span class="n">Account</span> <span class="n">WHERE</span> <span class="n">Id</span> <span class="o">=</span> <span class="o">:</span><span class="n">idAccount</span> <span class="n">AND</span> <span class="n">AccountNumber</span> <span class="n">IN</span> <span class="o">:</span><span class="n">ELIGIBLE_ACCOUNT_NUMBER_LIST</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+    </article>
+  </main>
+
+
+    </div>
+    
+    <footer>
+      
+
+
+  
+
+    
+
+    
+      
+      
+    
+    
+    <p>Generated with <a href="https://gohugo.io">Hugo</a> using the <a href="https://gitlab.com/rmaguiar/hugo-theme-color-your-world">Color Your World</a> theme.</p>
+
+  
+
+
+
+
+
+
+
+  
+
+  
+    
+    
+  
+
+  <p>本页同时支持: <a rel="alternate" hreflang="en" href="/posts/lwc-as-a-service/">English</a>.</p>
+
+
+
+
+
+
+
+
+
+
+<section class="req-js">
+  <button class="outline-dashed" title="切换浅色/深色主题"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use xlink:href="#adjust"/></svg></button><input class="outline-dashed" type="color" list="presets" value="#1f676b" title="更改颜色" aria-label="更改颜色"><datalist id="presets"><option value="#1f676b"><option value="#1dbc91"><option value="#225670"><option value="#dd587c"><option value="#902b37"><option value="#f3a530"><option value="#754e85"><option value="#7fc121"><option value="#a8314a"><option value="#ff7433"><option value="#3e6728"><option value="#c063bd"></datalist>
+</section>
+
+
+
+  <noscript>
+    <p class="noscript">由于某些功能被禁用，页面无法运行JavaScript。</p>
+  </noscript>
+
+
+
+    </footer>
+    
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true">
+      <symbol viewBox="0 0 512 512" id="adjust">
+        <path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/>
+      </symbol>
+      
+      
+      
+      
+  
+<symbol viewBox="0 0 448 512" id="hashtag">
+  <path d="M440.667 182.109l7.143-40c1.313-7.355-4.342-14.109-11.813-14.109h-74.81l14.623-81.891C377.123 38.754 371.468 32 363.997 32h-40.632a12 12 0 0 0-11.813 9.891L296.175 128H197.54l14.623-81.891C213.477 38.754 207.822 32 200.35 32h-40.632a12 12 0 0 0-11.813 9.891L132.528 128H53.432a12 12 0 0 0-11.813 9.891l-7.143 40C33.163 185.246 38.818 192 46.289 192h74.81L98.242 320H19.146a12 12 0 0 0-11.813 9.891l-7.143 40C-1.123 377.246 4.532 384 12.003 384h74.81L72.19 465.891C70.877 473.246 76.532 480 84.003 480h40.632a12 12 0 0 0 11.813-9.891L151.826 384h98.634l-14.623 81.891C234.523 473.246 240.178 480 247.65 480h40.632a12 12 0 0 0 11.813-9.891L315.472 384h79.096a12 12 0 0 0 11.813-9.891l7.143-40c1.313-7.355-4.342-14.109-11.813-14.109h-74.81l22.857-128h79.096a12 12 0 0 0 11.813-9.891zM261.889 320h-98.634l22.857-128h98.634l-22.857 128z"/>
+</symbol>
+
+
+  <symbol viewBox="0 0 320 512" id="caret-down">
+    <path d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"/>
+  </symbol>
+
+
+      
+      
+      
+    </svg>
+    
+    
+    
+
+    
+    
+
+  </body>
+</html>
