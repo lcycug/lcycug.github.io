@@ -14,10 +14,12 @@
         <pubDate>Fri, 13 Aug 2021 07:53:21 +0800</pubDate>
         
         <guid>https://blog.lcycug.live/zh/posts/lwc-as-a-service/</guid>
-        <description>force-app/main/default/aura/ParentAuraCmp
- force-app/main/default/aura/ParentAuraCmp/ParentAuraCmpController.js
-/** * @author Sean Lee * @date 2021-08-13 * @description This component is used to */ ({ checkAccountEligibility: function (component) { let idAccount = component.get(&amp;#34;v.recordId&amp;#34;), service = component.find(&amp;#34;service&amp;#34;), { checkEligibilityStatus } = service; if (checkEligibilityStatus) { checkEligibilityStatus(idAccount).then((response) =&amp;gt; { component.set(&amp;#34;v.boolEligible&amp;#34;, response === true); }); } } }); force-app/main/default/aura/ParentAuraCmp/ParentAuraCmp.cmp
-&amp;lt;!-- - @author Sean Lee - @date 2021-08-13 - @description This component is used to --&amp;gt; &amp;lt;aura:component description=&amp;#34;ParentAuraCmp&amp;#34; controller=&amp;#34;AccountService&amp;#34; implements=&amp;#34;,flexipage:availableForRecordHome,force:hasRecordId&amp;#34; access=&amp;#34;global&amp;#34;&amp;gt; &amp;lt;aura:attribute name=&amp;#34;boolEligible&amp;#34; type=&amp;#34;Boolean&amp;#34; default=&amp;#34;false&amp;#34; /&amp;gt; &amp;lt;aura:handler name=&amp;#34;init&amp;#34; value=&amp;#34;{!</description>
+        <description>简介 在本例中，我们有Aura和LWC两个组件。我们需要从Aura调用LWC提供的服务获取当前Id是否符合某种资格，后台通过Custom Label配置了符合条件的AccountNumber。
+ Aura组件 force-app/main/default/aura/ParentAuraCmp
+ force-app/main/default/aura/ParentAuraCmp/ParentAuraCmp.cmp
+&amp;lt;!-- - @author Sean Lee - @date 2021-08-13 - @description This component is used to call the lwc service. --&amp;gt; &amp;lt;aura:component description=&amp;#34;ParentAuraCmp&amp;#34; implements=&amp;#34;flexipage:availableForRecordHome,force:hasRecordId&amp;#34; access=&amp;#34;global&amp;#34;&amp;gt; &amp;lt;aura:attribute name=&amp;#34;boolEligible&amp;#34; type=&amp;#34;Boolean&amp;#34; default=&amp;#34;false&amp;#34; /&amp;gt; &amp;lt;aura:handler name=&amp;#34;init&amp;#34; value=&amp;#34;{!this}&amp;#34; action=&amp;#34;{!c.checkAccountEligibility}&amp;#34; /&amp;gt; &amp;lt;c:accountEligibilityService aura:id=&amp;#34;service&amp;#34; /&amp;gt; &amp;lt;h3&amp;gt;Account Eligibility Status&amp;lt;/h3&amp;gt; &amp;lt;div&amp;gt;&amp;lt;strong&amp;gt;{!v.boolEligible}&amp;lt;/strong&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;/aura:component&amp;gt; force-app/main/default/aura/ParentAuraCmp/ParentAuraCmp.cmp-meta.xml
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34; ?&amp;gt; &amp;lt;AuraDefinitionBundle xmlns=&amp;#34;http://soap.sforce.com/2006/04/metadata&amp;#34;&amp;gt; &amp;lt;apiVersion&amp;gt;52.0&amp;lt;/apiVersion&amp;gt; &amp;lt;description&amp;gt;ParentAuraCmp&amp;lt;/description&amp;gt; &amp;lt;/AuraDefinitionBundle&amp;gt; force-app/main/default/aura/ParentAuraCmp/ParentAuraCmpController.js
+/** * @author Sean Lee * @date 2021-08-13 * @description This component is used to */ ({ checkAccountEligibility: function (component) { let idAccount = component.</description>
       </item>
     
       <item>

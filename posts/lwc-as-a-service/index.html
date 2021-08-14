@@ -493,7 +493,7 @@
       "inLanguage": "en",
       "datePublished": "2021-08-13",
       "dateModified": "2021-08-13",
-      "wordCount" : "241",
+      "wordCount" : "445",
       "publisher": {
         "@type": "Person",
         "name": "Sean Lee"
@@ -636,6 +636,28 @@
       </header>
     
       
+  <details class="toc" open>
+    <summary class="outline-dashed">
+      Contents
+    </summary>
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#the-aura-component">The Aura component</a></li>
+    <li><a href="#the-lwc-service">The LWC service</a></li>
+    <li><a href="#the-backend-supports">The backend supports</a>
+      <ul>
+        <li><a href="#accountservicecls">AccountService.cls</a></li>
+        <li><a href="#constantscls">Constants.cls</a></li>
+        <li><a href="#customlabels">CustomLabels</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+  </details>
+
       
 
 
@@ -680,6 +702,21 @@
 
 
 
+
+
+
+
+
+
+  <h2 id="introduction"><a class="anchor" href="#introduction" title='Anchor for: Introduction.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Introduction</h2> 
+
+<p>In this case, we have two lightning components of which one is an Aura and the other is a LWC. The latter one serves as an Account Eligibility Checking service that will be invoked by the Aura.</p>
+
+
+
+
+
+  <h2 id="the-aura-component"><a class="anchor" href="#the-aura-component" title='Anchor for: The Aura component.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> The Aura component</h2> 
 
 <p>force-app/main/default/aura/ParentAuraCmp</p>
 <p>
@@ -704,14 +741,33 @@
     <img
       
       loading="lazy"
-      src="image-20210813125730158.png"
-      alt="image-20210813125730158"
+      src="image-20210814200808888.png"
+      alt="image-20210814200808888"
     />
 
   
 
 </p>
-<p>force-app/main/default/aura/ParentAuraCmp/ParentAuraCmpController.js</p>
+<p>force-app/main/default/aura/ParentAuraCmp/ParentAuraCmp.cmp</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!--
+</span><span class="c"> - @author Sean Lee
+</span><span class="c"> - @date 2021-08-13
+</span><span class="c"> - @description This component is used to call the lwc service.
+</span><span class="c"> --&gt;</span>
+<span class="p">&lt;</span><span class="nt">aura:component</span> <span class="na">description</span><span class="o">=</span><span class="s">&#34;ParentAuraCmp&#34;</span> <span class="na">implements</span><span class="o">=</span><span class="s">&#34;flexipage:availableForRecordHome,force:hasRecordId&#34;</span> <span class="na">access</span><span class="o">=</span><span class="s">&#34;global&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">aura:attribute</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;boolEligible&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;Boolean&#34;</span> <span class="na">default</span><span class="o">=</span><span class="s">&#34;false&#34;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">aura:handler</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;init&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;{!this}&#34;</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;{!c.checkAccountEligibility}&#34;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">c:accountEligibilityService</span> <span class="na">aura:id</span><span class="o">=</span><span class="s">&#34;service&#34;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Account Eligibility Status<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>{!v.boolEligible}<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">aura:component</span><span class="p">&gt;</span>
+</code></pre></div><p>force-app/main/default/aura/ParentAuraCmp/ParentAuraCmp.cmp-meta.xml</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span class="nt">&lt;AuraDefinitionBundle</span> <span class="na">xmlns=</span><span class="s">&#34;http://soap.sforce.com/2006/04/metadata&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;apiVersion&gt;</span>52.0<span class="nt">&lt;/apiVersion&gt;</span>
+    <span class="nt">&lt;description&gt;</span>ParentAuraCmp<span class="nt">&lt;/description&gt;</span>
+<span class="nt">&lt;/AuraDefinitionBundle&gt;</span>
+</code></pre></div><p>force-app/main/default/aura/ParentAuraCmp/ParentAuraCmpController.js</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-javascript" data-lang="javascript"><span class="cm">/**
 </span><span class="cm"> * @author Sean Lee
 </span><span class="cm"> * @date 2021-08-13
@@ -730,20 +786,14 @@
     <span class="p">}</span>
 <span class="p">});</span>
 
-</code></pre></div><p>force-app/main/default/aura/ParentAuraCmp/ParentAuraCmp.cmp</p>
-<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!--
-</span><span class="c"> - @author Sean Lee
-</span><span class="c"> - @date 2021-08-13
-</span><span class="c"> - @description This component is used to
-</span><span class="c"> --&gt;</span>
-<span class="p">&lt;</span><span class="nt">aura:component</span> <span class="na">description</span><span class="o">=</span><span class="s">&#34;ParentAuraCmp&#34;</span> <span class="na">controller</span><span class="o">=</span><span class="s">&#34;AccountService&#34;</span> <span class="na">implements</span><span class="o">=</span><span class="s">&#34;,flexipage:availableForRecordHome,force:hasRecordId&#34;</span> <span class="na">access</span><span class="o">=</span><span class="s">&#34;global&#34;</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">aura:attribute</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;boolEligible&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;Boolean&#34;</span> <span class="na">default</span><span class="o">=</span><span class="s">&#34;false&#34;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;</span><span class="nt">aura:handler</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;init&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;{!this}&#34;</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;{!c.checkAccountEligibility}&#34;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;</span><span class="nt">c:accountEligibilityService</span> <span class="na">aura:id</span><span class="o">=</span><span class="s">&#34;service&#34;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Account Eligibility Status<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>{!v.boolEligible}<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">aura:component</span><span class="p">&gt;</span>
-</code></pre></div><p>force-app/main/default/lwc/accountEligibilityService</p>
+</code></pre></div>
+
+
+
+
+  <h2 id="the-lwc-service"><a class="anchor" href="#the-lwc-service" title='Anchor for: The LWC service.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> The LWC service</h2> 
+
+<p>force-app/main/default/lwc/accountEligibilityService</p>
 <p>
 
 
@@ -766,8 +816,8 @@
     <img
       
       loading="lazy"
-      src="image-20210813125920860.png"
-      alt="image-20210813125920860"
+      src="image-20210814200936869.png"
+      alt="image-20210814200936869"
     />
 
   
@@ -777,15 +827,15 @@
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!--
 </span><span class="c"> - @author Sean Lee
 </span><span class="c"> - @date 2021-08-13
-</span><span class="c"> - @description This component is used to
+</span><span class="c"> - @description This component is used to service as an Account Eligibility Service.
 </span><span class="c"> --&gt;</span>
 <span class="c">&lt;!-- Account Eligibility Service --&gt;</span>
 <span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
 </code></pre></div><p>force-app/main/default/lwc/accountEligibilityService/accountEligibilityService.js</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-javascript" data-lang="javascript"><span class="cm">/**
 </span><span class="cm"> * @author Sean Lee
-</span><span class="cm"> * @date 2021-08-13
-</span><span class="cm"> * @description This component is used to
+</span><span class="cm"> * @date 2021-08-03
+</span><span class="cm"> * @description This component is used to service as an Account Eligibility Service.
 </span><span class="cm"> */</span>
 <span class="kr">import</span> <span class="nx">checkEligibility</span> <span class="nx">from</span> <span class="s2">&#34;@salesforce/apex/AccountService.checkEligibility&#34;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">ShowToastEvent</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;lightning/platformShowToastEvent&#34;</span><span class="p">;</span>
@@ -804,7 +854,29 @@
         <span class="p">});</span>
 <span class="p">};</span>
 <span class="kr">export</span> <span class="p">{</span> <span class="nx">checkEligibilityStatus</span> <span class="p">};</span>
-</code></pre></div><p>force-app/main/default/classes/AccountService.cls</p>
+</code></pre></div><p>force-app/main/default/lwc/accountEligibilityService/accountEligibilityService.js-meta.xml</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span class="nt">&lt;LightningComponentBundle</span> <span class="na">xmlns=</span><span class="s">&#34;http://soap.sforce.com/2006/04/metadata&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;apiVersion&gt;</span>52.0<span class="nt">&lt;/apiVersion&gt;</span>
+    <span class="nt">&lt;description&gt;</span>Account Eligibility Service<span class="nt">&lt;/description&gt;</span>
+    <span class="nt">&lt;isExposed&gt;</span>false<span class="nt">&lt;/isExposed&gt;</span>
+    <span class="nt">&lt;masterLabel&gt;</span>Account Eligibility Service<span class="nt">&lt;/masterLabel&gt;</span>
+<span class="nt">&lt;/LightningComponentBundle&gt;</span>
+</code></pre></div>
+
+
+
+
+  <h2 id="the-backend-supports"><a class="anchor" href="#the-backend-supports" title='Anchor for: The backend supports.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> The backend supports</h2> 
+
+
+
+
+
+
+  <h3 id="accountservicecls"><a class="anchor" href="#accountservicecls" title='Anchor for: AccountService.cls.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> AccountService.cls</h3> 
+
+<p>force-app/main/default/classes/AccountService.cls</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
 </span><span class="cm"> * @author Sean Lee
 </span><span class="cm"> * @date 2021-08-13
@@ -817,7 +889,63 @@
         <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">isNotBlank</span><span class="o">(</span><span class="n">idAccount</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">[</span><span class="n">SELECT</span> <span class="nf">COUNT</span><span class="o">()</span> <span class="n">FROM</span> <span class="n">Account</span> <span class="n">WHERE</span> <span class="n">Id</span> <span class="o">=</span> <span class="o">:</span><span class="n">idAccount</span> <span class="n">AND</span> <span class="n">AccountNumber</span> <span class="n">IN</span> <span class="o">:</span><span class="n">ELIGIBLE_ACCOUNT_NUMBER_LIST</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
     <span class="o">}</span>
 <span class="o">}</span>
+</code></pre></div><p>force-app/main/default/classes/AccountService.cls-meta.xml</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span class="nt">&lt;ApexClass</span> <span class="na">xmlns=</span><span class="s">&#34;http://soap.sforce.com/2006/04/metadata&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;apiVersion&gt;</span>52.0<span class="nt">&lt;/apiVersion&gt;</span>
+    <span class="nt">&lt;status&gt;</span>Active<span class="nt">&lt;/status&gt;</span>
+<span class="nt">&lt;/ApexClass&gt;</span>
 </code></pre></div>
+
+
+
+
+  <h3 id="constantscls"><a class="anchor" href="#constantscls" title='Anchor for: Constants.cls.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Constants.cls</h3> 
+
+<p>force-app/main/default/classes/Constants.cls</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * @author Sean Lee
+</span><span class="cm"> * @date 2021-08-13
+</span><span class="cm"> * @description This class is used to serve as a pool of Constant variables.
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="n">with</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">Constants</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nf">Constants</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">SEMI_COLON_REGEXP_SPACE_IGNORED</span> <span class="o">=</span> <span class="err">&#39;\\</span><span class="n">s</span><span class="o">*;</span><span class="err">\\</span><span class="n">s</span><span class="o">*</span><span class="err">&#39;</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><p>force-app/main/default/classes/Constants.cls-meta.xml</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span class="nt">&lt;ApexClass</span> <span class="na">xmlns=</span><span class="s">&#34;http://soap.sforce.com/2006/04/metadata&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;apiVersion&gt;</span>52.0<span class="nt">&lt;/apiVersion&gt;</span>
+    <span class="nt">&lt;status&gt;</span>Active<span class="nt">&lt;/status&gt;</span>
+<span class="nt">&lt;/ApexClass&gt;</span>
+</code></pre></div>
+
+
+
+
+  <h3 id="customlabels"><a class="anchor" href="#customlabels" title='Anchor for: CustomLabels.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> CustomLabels</h3> 
+
+<p>force-app/main/default/labels/CustomLabels.labels-meta.xml</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span class="nt">&lt;CustomLabels</span> <span class="na">xmlns=</span><span class="s">&#34;http://soap.sforce.com/2006/04/metadata&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;labels&gt;</span>
+        <span class="nt">&lt;fullName&gt;</span>Eligible_Account_Number_List<span class="nt">&lt;/fullName&gt;</span>
+        <span class="nt">&lt;language&gt;</span>en_US<span class="nt">&lt;/language&gt;</span>
+        <span class="nt">&lt;protected&gt;</span>true<span class="nt">&lt;/protected&gt;</span>
+        <span class="nt">&lt;shortDescription&gt;</span>Eligible Account Number List<span class="nt">&lt;/shortDescription&gt;</span>
+        <span class="nt">&lt;value&gt;</span>test<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/labels&gt;</span>
+<span class="nt">&lt;/CustomLabels&gt;</span>
+</code></pre></div>
+
+
+
+
+  <h2 id="conclusion"><a class="anchor" href="#conclusion" title='Anchor for: Conclusion.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Conclusion</h2> 
+
+<p>In the demo above, we called the LWC from an Aura, and a Promise was returned. We had to handle it in the Aura to get the response deep from the backend.</p>
+
 
 
     </article>
