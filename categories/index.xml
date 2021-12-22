@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sean&#39;s Blog</title>
-    <link>https://blog.lcycug.live/categories/</link>
+    <link>https://lcycug.github.io/categories/</link>
     <description>Recent contents on Sean&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>Copyright © 2021, Sean Lee; All rights reserved.</copyright><atom:link href="https://blog.lcycug.live/categories/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2021, Sean Lee; All rights reserved.</copyright><atom:link href="https://lcycug.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="light">
+  <head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Hugo 0.91.0">
+<meta name="theme" content="Color Your World -- gitlab.com/rmaguiar/hugo-theme-color-your-world">
+<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+<link rel="manifest" href="/img/site.webmanifest">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<title>Salesforce Schedulers | Sean&#39;s Blog</title>
+
+
+<meta name="author" content="Sean Lee">
+
+
+
+<meta name="robots" content="index follow">
+
+
+
+
+  
+    <link rel="canonical" href="https://lcycug.github.io/posts/salesforce-schedulers/">
+  
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="Sean&#39;s Blog">
+<meta property="og:title" content="Salesforce Schedulers">
+
+  <meta property="og:url" content="https://lcycug.github.io/posts/salesforce-schedulers/">
+
+
+
+
+
+
+
+
+  <meta property="og:type" content="article">
+  
+  
+    <meta property="article:published_time" content="2021-08-16">
+    <meta property="article:modified_time" content="2021-08-16">
+    <meta property="og:updated_time" content="2021-08-16">
+  
+
+  
+  
+  
+    <meta name="twitter:creator" content="@&lt;username&gt;">
+  
+  
+
+  <meta name="twitter:site" content="@&lt;username&gt;">
+
+
+
+
+
+
+
+  <meta name="twitter:dnt" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="theme-color" content="#222">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+    
+      
+        
+          
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+    
+    
+
+    
+
+      
+        
+      
+      
+    
+
+  
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "mainEntityOfPage": {
+        "@type": "WebSite",
+        "@id": "https:\/\/lcycug.github.io\/"
+      },
+      "headline": "Salesforce Schedulers",
+      "description": "",
+      
+      "url": "https:\/\/lcycug.github.io\/posts\/salesforce-schedulers\/",
+      "inLanguage": "en",
+      "datePublished": "2021-08-16",
+      "dateModified": "2021-08-16",
+      "wordCount" : "1153",
+      "publisher": {
+        "@type": "Person",
+        "name": "Sean Lee"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Sean Lee",
+        "description": "Some indescribable horror.",
+        "sameAs": ["https://facebook.com/\u003cusername\u003e","https://www.flickr.com/\u003cusername\u003e","https://open.audio/\u003cusername\u003e","https://github.com/\u003cusername\u003e","https://gitlab.com/\u003cusername\u003e","https://www.instagram.com/\u003cusername\u003e","https://keybase.io/\u003cusername\u003e","https://www.linkedin.com/in/\u003cusername\u003e","https://mastodon.social/\u003cusername\u003e","https://mastodon.too/\u003cusername\u003e","https://yet.another.one/\u003cusername\u003e","https://matrix.to/#/\u003cusername\u003e:matrix.org","https://matrix.to/#/\u003cusername\u003e:other.org","https://medium.com/\u003cusername\u003e","https://peertube.something/accounts/\u003cusername\u003e","https://pixelfed.social/\u003cusername\u003e","https://www.reddit.com/user/\u003cusername\u003e","https://app.element.io/#/user/\u003cusername\u003e:matrix.org","https://www.snapchat.com/add/\u003cusername\u003e","https://soundcloud.com/\u003cusername\u003e","https://stackoverflow.com/users/\u003cusername\u003e","https://www.strava.com/athletes/\u003cusername\u003e","https://t.me/\u003cusername\u003e","https://www.twitch.tv/\u003cusername\u003e","https://twitter.com/\u003cusername\u003e","https://vimeo.com/\u003cusername\u003e","https://wa.me/\u003cnumber\u003e","https://www.xing.com/profile/\u003cusername\u003e","https://youtube.com/channel/\u003cchannelid\u003e"]
+      }
+    }
+  </script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://lcycug.github.io/css/main.min.8e05f798b394986601b0549619b019d4fb9158b099e78d9b0070ef59a3ef192e.css" integrity="sha256-jgX3mLOUmGYBsFSWGbAZ1PuRWLCZ542bAHDvWaPvGS4=" crossorigin="anonymous">
+
+
+
+<noscript>
+
+  
+  
+
+  
+    <meta name="theme-color" content="#1dbc91" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#1f676b" media="(prefers-color-scheme: light)">
+  
+
+  
+  <link rel="stylesheet" href="https://lcycug.github.io/css/noscript.min.9bacd85b6f1d42296c56d3b8457d0c13a4e7f415c4ca5fc8affb6ed6b39cad72.css" integrity="sha256-m6zYW28dQilsVtO4RX0ME6Tn9BXEyl/Ir/tu1rOcrXI=" crossorigin="anonymous">
+
+</noscript>
+
+
+
+<link rel="preload" href="/fonts/open-sans-v17-latin-700.woff2" as="font" crossorigin="anonymous">
+<link rel="preload" href="/fonts/open-sans-v17-latin-italic.woff2" as="font" crossorigin="anonymous">
+<link rel="preload" href="/fonts/open-sans-v17-latin-regular.woff2" as="font" crossorigin="anonymous">
+<link rel="preload" href="/fonts/oswald-v29-latin-700.woff2" as="font" crossorigin="anonymous">
+
+
+
+
+
+
+
+
+
+<link rel="me" href="https://facebook.com/%3cusername%3e"> 
+<link rel="me" href="https://www.flickr.com/%3cusername%3e"> 
+<link rel="me" href="https://open.audio/%3cusername%3e"> 
+<link rel="me" href="https://github.com/%3cusername%3e"> 
+<link rel="me" href="https://gitlab.com/%3cusername%3e"> 
+<link rel="me" href="https://www.instagram.com/%3cusername%3e"> 
+<link rel="me" href="https://keybase.io/%3cusername%3e"> 
+<link rel="me" href="https://www.linkedin.com/in/%3cusername%3e"> 
+<link rel="me" href="https://mastodon.social/%3cusername%3e"> 
+<link rel="me" href="https://mastodon.too/%3cusername%3e"> 
+<link rel="me" href="https://yet.another.one/%3cusername%3e"> 
+<link rel="me" href="https://matrix.to/#/%3cusername%3e:matrix.org"> 
+<link rel="me" href="https://matrix.to/#/%3cusername%3e:other.org"> 
+<link rel="me" href="https://medium.com/%3cusername%3e"> 
+<link rel="me" href="https://peertube.something/accounts/%3cusername%3e"> 
+<link rel="me" href="https://pixelfed.social/%3cusername%3e"> 
+<link rel="me" href="https://www.reddit.com/user/%3cusername%3e"> 
+<link rel="me" href="https://app.element.io/#/user/%3cusername%3e:matrix.org"> 
+<link rel="me" href="https://www.snapchat.com/add/%3cusername%3e"> 
+<link rel="me" href="https://soundcloud.com/%3cusername%3e"> 
+<link rel="me" href="https://stackoverflow.com/users/%3cusername%3e"> 
+<link rel="me" href="https://www.strava.com/athletes/%3cusername%3e"> 
+<link rel="me" href="https://t.me/%3cusername%3e"> 
+<link rel="me" href="https://www.twitch.tv/%3cusername%3e"> 
+<link rel="me" href="https://twitter.com/%3cusername%3e"> 
+<link rel="me" href="https://vimeo.com/%3cusername%3e"> 
+<link rel="me" href="https://wa.me/%3cnumber%3e"> 
+<link rel="me" href="https://www.xing.com/profile/%3cusername%3e"> 
+<link rel="me" href="https://youtube.com/channel/%3cchannelid%3e"> 
+
+
+<script src="https://lcycug.github.io/js/main.min.dd78ee91e8ad16d9570adefe0fb4135123f73a1fe7c44b04771ad23909893d00.js" integrity="sha256-3XjukeitFtlXCt7&#43;D7QTUSP3Oh/nxEsEdxrSOQmJPQA=" crossorigin="anonymous"></script>
+
+  </head>
+
+  <body>
+
+    <header>
+      
+
+  <a href="/">Sean&#39;s Blog</a>
+
+
+
+
+  
+    <nav aria-label="Main menu.">
+      <ul>
+        
+          <li>
+            <a class="btn" href="/about/">About</a>
+          </li>
+        
+          <li>
+            <a class="btn" href="/posts/">Posts</a>
+          </li>
+        
+          <li>
+            <a class="btn" href="/index.xml">RSS</a>
+          </li>
+        
+      </ul>
+    </nav>
+  
+
+
+    </header>
+
+    <div class="filler">
+      
+
+  <main>
+    <article>
+      <header>
+        
+        <h1>Salesforce Schedulers</h1>
+
+        
+          <p>
+            
+              Published on <time datetime="2021-08-16">2021-08-16</time>
+            
+          </p>
+        
+        
+        
+        
+      </header>
+    
+      
+  <details class="toc" open>
+    <summary class="outline-dashed">
+      Contents
+    </summary>
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#a-standalone-scheduler">A Standalone Scheduler</a></li>
+    <li><a href="#batchable-to-the-rescue">Batchable to the rescue</a>
+      <ul>
+        <li><a href="#whats-inside-a-batchable">What&rsquo;s inside a Batchable?</a></li>
+        <li><a href="#migrate-from-scheduler-to-batch">Migrate from scheduler to batch</a></li>
+        <li><a href="#wheres-the-benefit">Where&rsquo;s the benefit?</a></li>
+        <li><a href="#good-enough">Good enough?</a></li>
+      </ul>
+    </li>
+    <li><a href="#queueable-for-processing">Queueable for processing</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+  </details>
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+<p>TL;DR</p>
+<p>The post tries to illustrate the benefits of adopting  <strong>S</strong>chedulable-<strong>B</strong>atchable-<strong>Q</strong>ueueable structure to handle massive dataset. Schedulable focuses on scheduling, batchable does splitting, and queueable does executing.</p>
+
+
+
+
+
+  <h2 id="introduction"><a class="anchor" href="#introduction" title='Anchor for: Introduction.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Introduction</h2> 
+
+<p>We usually need to schedule some jobs within our Salesforce orgs to execute some specific piece of logic at some given time.</p>
+<p>The basic use case for this might be deleting custom logs to release some space to have new ones inserted into the database. Say, we only keep the very near 30 days logs which means we will execute deletion every day to remove logs generated 30 days ago.</p>
+<p>Let&rsquo;s presume what we have now is a small start-up business org where we have thousands of logs daily. We can delete all of them within a scheduler like below.</p>
+
+
+
+
+
+  <h2 id="a-standalone-scheduler"><a class="anchor" href="#a-standalone-scheduler" title='Anchor for: A Standalone Scheduler.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> A Standalone Scheduler</h2> 
+
+<p>Here we have a very simple standalone scheduler with only one line in the block of the main method of a scheduler.</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">with</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">LogDeletionScheduler</span> <span class="kd">implements</span> <span class="n">Schedulable</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">SchedulableContext</span> <span class="n">objSC</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">delete</span> <span class="o">[</span><span class="n">SELECT</span> <span class="n">Id</span> <span class="n">FROM</span> <span class="n">Log__c</span> <span class="n">LIMIT</span> <span class="n">10000</span><span class="o">];</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>For the Cron<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" title="See footnotes." role="doc-noteref">1</a></sup> Expression during we schedule the job, some online resources can help for it, like this site<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" title="See footnotes." role="doc-noteref">2</a></sup>.</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="n">global</span> <span class="kd">class</span> <span class="err">/*</span><span class="nc">System</span><span class="o">.*/</span><span class="n">System</span> 
+<span class="o">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="n">global</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">schedule</span><span class="o">(</span><span class="n">String</span> <span class="n">jobName</span><span class="o">,</span> <span class="n">String</span> <span class="n">cronExp</span><span class="o">,</span> <span class="n">Schedulable</span> <span class="n">schedulable</span><span class="o">)</span>
+  <span class="o">{</span>
+  <span class="o">}</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></div><p>We schedule it at mid-night in this way.</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="n">System</span><span class="o">.</span><span class="na">schedule</span><span class="o">(</span><span class="err">&#39;</span><span class="n">LogDeletionScheduler</span><span class="err">&#39;</span><span class="o">,</span> <span class="err">&#39;</span><span class="n">0</span> <span class="n">0</span> <span class="n">0</span> <span class="o">*</span> <span class="o">*</span> <span class="o">?</span><span class="err">&#39;</span><span class="o">,</span> <span class="k">new</span> <span class="n">LogDeletionScheduler</span><span class="o">());</span>
+</code></pre></div><p>Let&rsquo;s test it in a testing class.</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="nd">@IsTest</span>
+<span class="kd">private</span> <span class="kd">class</span> <span class="nc">LogDeletionSchedulerTest</span> <span class="o">{</span>
+    <span class="nd">@TestSetup</span>
+    <span class="kd">static</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Test</span><span class="o">.</span><span class="na">startTest</span><span class="o">();</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Log__c</span><span class="o">&gt;</span> <span class="n">lstLog</span> <span class="o">=</span> <span class="k">new</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Log__c</span><span class="o">&gt;();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">Integer</span> <span class="n">intI</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">intI</span> <span class="o">&lt;</span> <span class="n">100</span><span class="o">;</span> <span class="n">intI</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">lstLog</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Log__c</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="n">insert</span> <span class="n">lstLog</span><span class="o">;</span>
+        <span class="n">Test</span><span class="o">.</span><span class="na">stopTest</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="nd">@IsTest</span>
+    <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testDeletingLogs</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Test</span><span class="o">.</span><span class="na">startTest</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">assert</span><span class="o">([</span><span class="n">SELECT</span> <span class="nf">COUNT</span><span class="o">()</span> <span class="n">FROM</span> <span class="n">Log__c</span> <span class="n">LIMIT</span> <span class="n">200</span><span class="o">]</span> <span class="o">==</span> <span class="n">100</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">schedule</span><span class="o">(</span><span class="err">&#39;</span><span class="n">test</span><span class="err">&#39;</span><span class="o">,</span> <span class="err">&#39;</span><span class="n">0</span> <span class="n">0</span> <span class="n">12</span> <span class="n">1</span> <span class="o">*</span> <span class="o">?</span><span class="err">&#39;</span><span class="o">,</span> <span class="k">new</span> <span class="n">LogDeletionScheduler</span><span class="o">());</span>
+        <span class="n">Test</span><span class="o">.</span><span class="na">stopTest</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">assert</span><span class="o">([</span><span class="n">SELECT</span> <span class="nf">COUNT</span><span class="o">()</span> <span class="n">FROM</span> <span class="n">Log__c</span> <span class="n">LIMIT</span> <span class="n">200</span><span class="o">]</span> <span class="o">==</span> <span class="n">0</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>As expected, we got a pass.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    <img
+      
+      loading="lazy"
+      src="https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/image-20210817084219084.png"
+      alt="image-20210817084219084"
+    />
+
+  
+
+</p>
+<p>In this example, we presumed and affirmed  that we would only have thousands of Logs to handle. We used a <code>LIMIT</code> here to prevent hitting limitation of the DML.</p>
+<p>Along with the expansion of our business, we have to handle tens of thousands of logs every month. Perhaps we can delete them on a weekly basis. In this post, we don&rsquo;t want to concern about the volume of Logs which reckon on business. We just want a scheduled job to handle all of them monthly whatever the volume of Logs is.</p>
+<p>So what will happen if we don&rsquo;t change our code when the size of logs is greater than 10, 000 in one month?</p>
+<p>Thanks to the <code>LIMIT</code> in the SOQL, the job won&rsquo;t fail. But the job itself can delete only 10, 000 Logs for now. Removing <code>LIMIT</code> will crash the job because of limitation defined by Salesforce<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" title="See footnotes." role="doc-noteref">3</a></sup>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    <img
+      
+      loading="lazy"
+      src="https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/2021-12-12-19-52-27-image.png"
+      alt="2021-12-12-19-52-27-image.png"
+    />
+
+  
+
+</p>
+<p>What about introducing <code>ORDER BY CreatedDate ASC</code> before <code>LIMIT 10000</code>? Well, that will delete the oldest 10, 000 Logs, but the question still remains. We cannot delete all of them at this point.</p>
+
+
+
+
+
+  <h2 id="batchable-to-the-rescue"><a class="anchor" href="#batchable-to-the-rescue" title='Anchor for: Batchable to the rescue.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Batchable to the rescue</h2> 
+
+<p>Salesforce has a built-in batchable interface<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" title="See footnotes." role="doc-noteref">4</a></sup> to handle data in batches. That is to say, the data we are handling will be split into batches and then executed under the same logic circularly until the last one record is processed.</p>
+
+
+
+
+
+  <h3 id="whats-inside-a-batchable"><a class="anchor" href="#whats-inside-a-batchable" title='Anchor for: What&rsquo;s inside a Batchable?.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> What&rsquo;s inside a Batchable?</h3> 
+
+<p>We have to implement three methods inside a batch class. <code>execute</code> is the main part for data handing. <code>finish</code> is usually used in chained jobs where we can invoke jobs one after another. <code>start</code> is used for splitting which returns <code>Iterable</code> to iterate through all of the queried data.</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="n">global</span> <span class="kd">interface</span> <span class="err">/*</span><span class="nc">Database</span><span class="o">.*/</span><span class="n">Batchable</span> 
+<span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">param1</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">param2</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">finish</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">param1</span><span class="o">);</span>
+
+    <span class="n">Iterable</span> <span class="nf">start</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">param1</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div><blockquote>
+<p>Talk is cheap. Show me the code.</p>
+</blockquote>
+
+
+
+
+
+  <h3 id="migrate-from-scheduler-to-batch"><a class="anchor" href="#migrate-from-scheduler-to-batch" title='Anchor for: Migrate from scheduler to batch.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Migrate from scheduler to batch</h3> 
+
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">with</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">LogDeletionBatch</span> <span class="kd">implements</span> <span class="n">Database</span><span class="o">.</span><span class="na">Batchable</span><span class="o">&lt;</span><span class="n">SObject</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Database</span><span class="o">.</span><span class="na">QueryLocator</span> <span class="nf">start</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">objBC</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Database</span><span class="o">.</span><span class="na">getQueryLocator</span><span class="o">([</span><span class="n">SELECT</span> <span class="n">Id</span> <span class="n">FROM</span> <span class="n">Log__c</span><span class="o">]);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">objBC</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Log__c</span><span class="o">&gt;</span> <span class="n">lstLog</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">delete</span> <span class="n">lstLog</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">finish</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">objBC</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span class="nt">&lt;ApexClass</span> <span class="na">xmlns=</span><span class="s">&#34;http://soap.sforce.com/2006/04/metadata&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;apiVersion&gt;</span>53.0<span class="nt">&lt;/apiVersion&gt;</span>
+    <span class="nt">&lt;status&gt;</span>Active<span class="nt">&lt;/status&gt;</span>
+<span class="nt">&lt;/ApexClass&gt;</span>
+</code></pre></div><p>The scheduler was updated as below. The only thing we need is to execute the batch job with a given batch size. In this example, a default value is specified.</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">with</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">LogDeletionScheduler</span> <span class="kd">implements</span> <span class="n">Schedulable</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">SchedulableContext</span> <span class="n">objSC</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Database</span><span class="o">.</span><span class="na">executeBatch</span><span class="o">(</span><span class="k">new</span> <span class="n">LogDeletionBatch</span><span class="o">(),</span> <span class="n">200</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+
+
+  <h3 id="wheres-the-benefit"><a class="anchor" href="#wheres-the-benefit" title='Anchor for: Where&rsquo;s the benefit?.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Where&rsquo;s the benefit?</h3> 
+
+<p>Under the above structure, we don&rsquo;t need the <code>LIMIT</code> in the SOQL. The batchable will split Logs into many smaller lists and execute the same main logic onto each and every one of them until the last is finished.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    <img
+      
+      loading="lazy"
+      src="https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/2021-12-14-08-11-10-image.png"
+      alt="2021-12-14-08-11-10-image.png"
+    />
+
+  
+
+</p>
+
+
+
+
+
+  <h3 id="good-enough"><a class="anchor" href="#good-enough" title='Anchor for: Good enough?.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Good enough?</h3> 
+
+<p>It seems the Log deleting job works perfect so far. But what will happen with the further expansion of the business? Some other schedulers and batch jobs will be included into the very same org. There could be a scenario where many batch jobs are working at the same time. Each of them handles their own business, of course. For example, some jobs will be executing insanely during midnight when no end user is accessing the site. Another issue comes up again with Salesforce limitations.</p>
+<blockquote>
+<p>You&rsquo;ve exceeded the limit of 100 jobs in the flex queue for org 00D5f000006tSmL. Wait for some of your batch jobs to finish before adding more. To monitor and reorder jobs, use the Apex Flex Queue page in Setup.</p>
+</blockquote>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    <img
+      
+      loading="lazy"
+      src="https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/image-20211214214455809.png"
+      alt="image-20211214214455809"
+    />
+
+  
+
+</p>
+<p>So, we are not allowed to run batch jobs as many as we want. Resource is limited, which is a key point under the multi-tenant architecture.</p>
+<p>The most severe one in the above three limitations is the first because the batch jobs out of the range will fail instead of waiting in a queue.</p>
+
+
+
+
+
+  <h2 id="queueable-for-processing"><a class="anchor" href="#queueable-for-processing" title='Anchor for: Queueable for processing.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Queueable for processing</h2> 
+
+<blockquote>
+<p>We all have different parts to play.</p>
+</blockquote>
+<p>With all said above around a batch, it does well in data splitting but not handling. Here comes another important interface, Queueable. As the name implies, it queues jobs. Compared with two stated interfaces, the new one is more flexible. The limitation of a Queueable is only counting against the whole asynchronous calls. Beyond that, we can usually enqueue jobs with Queueable freely.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    <img
+      
+      loading="lazy"
+      src="https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/image-20211216085443878.png"
+      alt="image-20211216085443878"
+    />
+
+  
+
+</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">with</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">LogDeletionQueue</span> <span class="kd">implements</span> <span class="n">Queueable</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Log__c</span><span class="o">&gt;</span> <span class="n">lstLog</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">LogDeletionQueue</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Log__c</span><span class="o">&gt;</span> <span class="n">lstLog</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">lstLog</span> <span class="o">=</span> <span class="n">lstLog</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">QueueableContext</span> <span class="n">objQC</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">lstLog</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="k">this</span><span class="o">.</span><span class="na">lstLog</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">delete</span> <span class="k">this</span><span class="o">.</span><span class="na">lstLog</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>Accordingly, the batch should be updated.</p>
+<div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">with</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">LogDeletionBatch</span> <span class="kd">implements</span> <span class="n">Database</span><span class="o">.</span><span class="na">Batchable</span><span class="o">&lt;</span><span class="n">SObject</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Database</span><span class="o">.</span><span class="na">QueryLocator</span> <span class="nf">start</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">objBC</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Database</span><span class="o">.</span><span class="na">getQueryLocator</span><span class="o">([</span><span class="n">SELECT</span> <span class="n">Id</span> <span class="n">FROM</span> <span class="n">Log__c</span><span class="o">]);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">objBC</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Log__c</span><span class="o">&gt;</span> <span class="n">lstLog</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">enqueueJob</span><span class="o">(</span><span class="k">new</span> <span class="n">LogDeletionQueue</span><span class="o">(</span><span class="n">lstLog</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">finish</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">objBC</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+
+
+  <h2 id="conclusion"><a class="anchor" href="#conclusion" title='Anchor for: Conclusion.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Conclusion</h2> 
+
+<p>With all above, we come into a conclusion that the three interfaces woking together will unleash the power of asynchronous solution. By doing so, we can reduce some future code refactoring and diminish some unexpected limitation issues.</p>
+<section class="footnotes" role="doc-endnotes"><h2>References</h2>
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p><a href="https://en.wikipedia.org/wiki/Cron">cron - Wikipedia</a>&#160;<a href="#fnref:1" class="footnote-backref" title="Return to text." role="doc-backlink"><svg transform="rotate(180) translate(0 -1)" aria-hidden="true"><use xlink:href="#caret-down"/></svg></a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p><a href="https://freeformatter.com/cron-expression-generator-quartz.html">Free Online Cron Expression Generator and Describer - FreeFormatter.com</a>&#160;<a href="#fnref:2" class="footnote-backref" title="Return to text." role="doc-backlink"><svg transform="rotate(180) translate(0 -1)" aria-hidden="true"><use xlink:href="#caret-down"/></svg></a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p><a href="https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_gov_limits.htm#transaction_gov_limits_section">Execution Governors and Limits | Apex Developer Guide | Salesforce Developers</a>&#160;<a href="#fnref:3" class="footnote-backref" title="Return to text." role="doc-backlink"><svg transform="rotate(180) translate(0 -1)" aria-hidden="true"><use xlink:href="#caret-down"/></svg></a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p><a href="https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_batch_interface.htm">Apex Developer Guide | Using Batch Apex (salesforce.com)</a>&#160;<a href="#fnref:4" class="footnote-backref" title="Return to text." role="doc-backlink"><svg transform="rotate(180) translate(0 -1)" aria-hidden="true"><use xlink:href="#caret-down"/></svg></a></p>
+</li>
+</ol>
+</section>
+
+
+
+    </article>
+  </main>
+
+
+    </div>
+    
+    <footer>
+      
+
+
+  
+
+    
+
+    
+      
+      
+    
+    
+    <p>Generated with <a href="https://gohugo.io">Hugo</a> using the <a href="https://gitlab.com/rmaguiar/hugo-theme-color-your-world">Color Your World</a> theme.</p>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="req-js">
+  <button class="outline-dashed" title="Change to light/dark mode."><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use xlink:href="#adjust"/></svg></button><input class="outline-dashed" type="color" list="presets" value="#1f676b" title="Change accent color." aria-label="Change accent color."><datalist id="presets"><option value="#1f676b"><option value="#1dbc91"><option value="#225670"><option value="#dd587c"><option value="#902b37"><option value="#f3a530"><option value="#754e85"><option value="#7fc121"><option value="#a8314a"><option value="#ff7433"><option value="#3e6728"><option value="#c063bd"></datalist>
+</section>
+
+
+
+  <noscript>
+    <p class="noscript">Unable to execute JavaScript. Some features were disabled.</p>
+  </noscript>
+
+
+
+    </footer>
+    
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true">
+      <symbol viewBox="0 0 512 512" id="adjust">
+        <path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/>
+      </symbol>
+      
+      
+      
+      
+  
+<symbol viewBox="0 0 448 512" id="hashtag">
+  <path d="M440.667 182.109l7.143-40c1.313-7.355-4.342-14.109-11.813-14.109h-74.81l14.623-81.891C377.123 38.754 371.468 32 363.997 32h-40.632a12 12 0 0 0-11.813 9.891L296.175 128H197.54l14.623-81.891C213.477 38.754 207.822 32 200.35 32h-40.632a12 12 0 0 0-11.813 9.891L132.528 128H53.432a12 12 0 0 0-11.813 9.891l-7.143 40C33.163 185.246 38.818 192 46.289 192h74.81L98.242 320H19.146a12 12 0 0 0-11.813 9.891l-7.143 40C-1.123 377.246 4.532 384 12.003 384h74.81L72.19 465.891C70.877 473.246 76.532 480 84.003 480h40.632a12 12 0 0 0 11.813-9.891L151.826 384h98.634l-14.623 81.891C234.523 473.246 240.178 480 247.65 480h40.632a12 12 0 0 0 11.813-9.891L315.472 384h79.096a12 12 0 0 0 11.813-9.891l7.143-40c1.313-7.355-4.342-14.109-11.813-14.109h-74.81l22.857-128h79.096a12 12 0 0 0 11.813-9.891zM261.889 320h-98.634l22.857-128h98.634l-22.857 128z"/>
+</symbol>
+
+
+  <symbol viewBox="0 0 320 512" id="caret-down">
+    <path d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"/>
+  </symbol>
+
+
+      
+      
+      
+    </svg>
+    
+    
+    
+
+    
+    
+
+  </body>
+</html>

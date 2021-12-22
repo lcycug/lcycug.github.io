@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sean&#39;s Blog</title>
-    <link>https://blog.lcycug.live/tags/</link>
+    <link>https://lcycug.github.io/tags/</link>
     <description>Recent contents on Sean&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2021, Sean Lee; All rights reserved.</copyright>
-    <lastBuildDate>Fri, 13 Aug 2021 07:53:21 +0800</lastBuildDate><atom:link href="https://blog.lcycug.live/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Aug 2021 07:53:21 +0800</lastBuildDate><atom:link href="https://lcycug.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>aura</title>
-      <link>https://blog.lcycug.live/tags/aura/</link>
+      <link>https://lcycug.github.io/tags/aura/</link>
       <pubDate>Fri, 13 Aug 2021 07:53:21 +0800</pubDate>
       
-      <guid>https://blog.lcycug.live/tags/aura/</guid>
+      <guid>https://lcycug.github.io/tags/aura/</guid>
       <description></description>
     </item>
     
     <item>
       <title>lwc</title>
-      <link>https://blog.lcycug.live/tags/lwc/</link>
+      <link>https://lcycug.github.io/tags/lwc/</link>
       <pubDate>Fri, 13 Aug 2021 07:53:21 +0800</pubDate>
       
-      <guid>https://blog.lcycug.live/tags/lwc/</guid>
+      <guid>https://lcycug.github.io/tags/lwc/</guid>
       <description></description>
     </item>
     

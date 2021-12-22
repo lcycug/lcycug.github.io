@@ -2,18 +2,371 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sean&#39;s Blog</title>
-    <link>https://blog.lcycug.live/</link>
+    <link>https://lcycug.github.io/</link>
     <description>Recent contents on Sean&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2021, Sean Lee; All rights reserved.</copyright>
-    <lastBuildDate>Sun, 15 Aug 2021 09:33:12 +0800</lastBuildDate><atom:link href="https://blog.lcycug.live/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 16 Aug 2021 16:38:12 +0800</lastBuildDate><atom:link href="https://lcycug.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Salesforce Schedulers</title>
+      <link>https://lcycug.github.io/posts/salesforce-schedulers/</link>
+      <pubDate>Mon, 16 Aug 2021 16:38:12 +0800</pubDate>
+      
+      <guid>https://lcycug.github.io/posts/salesforce-schedulers/</guid>
+      <description>&lt;p&gt;TL;DR&lt;/p&gt;
+&lt;p&gt;The post tries to illustrate the benefits of adopting  &lt;strong&gt;S&lt;/strong&gt;chedulable-&lt;strong&gt;B&lt;/strong&gt;atchable-&lt;strong&gt;Q&lt;/strong&gt;ueueable structure to handle massive dataset. Schedulable focuses on scheduling, batchable does splitting, and queueable does executing.&lt;/p&gt;
+
+
+
+
+
+  &lt;h2 id=&#34;introduction&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#introduction&#34; title=&#39;Anchor for: Introduction.&#39;&gt;&lt;svg aria-hidden=&#34;true&#34;&gt;&lt;use xlink:href=&#34;#hashtag&#34;/&gt;&lt;/svg&gt;&lt;/a&gt; Introduction&lt;/h2&gt; 
+
+&lt;p&gt;We usually need to schedule some jobs within our Salesforce orgs to execute some specific piece of logic at some given time.&lt;/p&gt;
+&lt;p&gt;The basic use case for this might be deleting custom logs to release some space to have new ones inserted into the database. Say, we only keep the very near 30 days logs which means we will execute deletion every day to remove logs generated 30 days ago.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s presume what we have now is a small start-up business org where we have thousands of logs daily. We can delete all of them within a scheduler like below.&lt;/p&gt;
+
+
+
+
+
+  &lt;h2 id=&#34;a-standalone-scheduler&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#a-standalone-scheduler&#34; title=&#39;Anchor for: A Standalone Scheduler.&#39;&gt;&lt;svg aria-hidden=&#34;true&#34;&gt;&lt;use xlink:href=&#34;#hashtag&#34;/&gt;&lt;/svg&gt;&lt;/a&gt; A Standalone Scheduler&lt;/h2&gt; 
+
+&lt;p&gt;Here we have a very simple standalone scheduler with only one line in the block of the main method of a scheduler.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sharing&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;LogDeletionScheduler&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;implements&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Schedulable&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SchedulableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objSC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;delete&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SELECT&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Id&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FROM&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LIMIT&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;10000&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;];&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For the Cron&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; Expression during we schedule the job, some online resources can help for it, like this site&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;n&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/*&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.*/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt; 
+&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;c1&#34;&gt;// ...
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;schedule&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;jobName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cronExp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Schedulable&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;schedulable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+  &lt;span class=&#34;c1&#34;&gt;// ...
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We schedule it at mid-night in this way.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;schedule&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LogDeletionScheduler&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LogDeletionScheduler&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Let&amp;rsquo;s test it in a testing class.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;nd&#34;&gt;@IsTest&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;LogDeletionSchedulerTest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;nd&#34;&gt;@TestSetup&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;startTest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;();&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Integer&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;intI&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;intI&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;intI&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;insert&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stopTest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;nd&#34;&gt;@IsTest&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;testDeletingLogs&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;startTest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;assert&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SELECT&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;COUNT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FROM&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LIMIT&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;schedule&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;12&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LogDeletionScheduler&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stopTest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;assert&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SELECT&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;COUNT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FROM&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LIMIT&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As expected, we got a pass.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    &lt;img
+      
+      loading=&#34;lazy&#34;
+      src=&#34;https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/image-20210817084219084.png&#34;
+      alt=&#34;image-20210817084219084&#34;
+    /&gt;
+
+  
+
+&lt;/p&gt;
+&lt;p&gt;In this example, we presumed and affirmed  that we would only have thousands of Logs to handle. We used a &lt;code&gt;LIMIT&lt;/code&gt; here to prevent hitting limitation of the DML.&lt;/p&gt;
+&lt;p&gt;Along with the expansion of our business, we have to handle tens of thousands of logs every month. Perhaps we can delete them on a weekly basis. In this post, we don&amp;rsquo;t want to concern about the volume of Logs which reckon on business. We just want a scheduled job to handle all of them monthly whatever the volume of Logs is.&lt;/p&gt;
+&lt;p&gt;So what will happen if we don&amp;rsquo;t change our code when the size of logs is greater than 10, 000 in one month?&lt;/p&gt;
+&lt;p&gt;Thanks to the &lt;code&gt;LIMIT&lt;/code&gt; in the SOQL, the job won&amp;rsquo;t fail. But the job itself can delete only 10, 000 Logs for now. Removing &lt;code&gt;LIMIT&lt;/code&gt; will crash the job because of limitation defined by Salesforce&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    &lt;img
+      
+      loading=&#34;lazy&#34;
+      src=&#34;https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/2021-12-12-19-52-27-image.png&#34;
+      alt=&#34;2021-12-12-19-52-27-image.png&#34;
+    /&gt;
+
+  
+
+&lt;/p&gt;
+&lt;p&gt;What about introducing &lt;code&gt;ORDER BY CreatedDate ASC&lt;/code&gt; before &lt;code&gt;LIMIT 10000&lt;/code&gt;? Well, that will delete the oldest 10, 000 Logs, but the question still remains. We cannot delete all of them at this point.&lt;/p&gt;
+
+
+
+
+
+  &lt;h2 id=&#34;batchable-to-the-rescue&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#batchable-to-the-rescue&#34; title=&#39;Anchor for: Batchable to the rescue.&#39;&gt;&lt;svg aria-hidden=&#34;true&#34;&gt;&lt;use xlink:href=&#34;#hashtag&#34;/&gt;&lt;/svg&gt;&lt;/a&gt; Batchable to the rescue&lt;/h2&gt; 
+
+&lt;p&gt;Salesforce has a built-in batchable interface&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt; to handle data in batches. That is to say, the data we are handling will be split into batches and then executed under the same logic circularly until the last one record is processed.&lt;/p&gt;
+
+
+
+
+
+  &lt;h3 id=&#34;whats-inside-a-batchable&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#whats-inside-a-batchable&#34; title=&#39;Anchor for: What&amp;rsquo;s inside a Batchable?.&#39;&gt;&lt;svg aria-hidden=&#34;true&#34;&gt;&lt;use xlink:href=&#34;#hashtag&#34;/&gt;&lt;/svg&gt;&lt;/a&gt; What&amp;rsquo;s inside a Batchable?&lt;/h3&gt; 
+
+&lt;p&gt;We have to implement three methods inside a batch class. &lt;code&gt;execute&lt;/code&gt; is the main part for data handing. &lt;code&gt;finish&lt;/code&gt; is usually used in chained jobs where we can invoke jobs one after another. &lt;code&gt;start&lt;/code&gt; is used for splitting which returns &lt;code&gt;Iterable&lt;/code&gt; to iterate through all of the queried data.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;n&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;interface&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/*&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.*/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Batchable&lt;/span&gt; 
+&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;BatchableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;param1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Object&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;param2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+
+    &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;finish&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;BatchableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;param1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+
+    &lt;span class=&#34;n&#34;&gt;Iterable&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;BatchableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;param1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;Talk is cheap. Show me the code.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+
+
+
+  &lt;h3 id=&#34;migrate-from-scheduler-to-batch&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#migrate-from-scheduler-to-batch&#34; title=&#39;Anchor for: Migrate from scheduler to batch.&#39;&gt;&lt;svg aria-hidden=&#34;true&#34;&gt;&lt;use xlink:href=&#34;#hashtag&#34;/&gt;&lt;/svg&gt;&lt;/a&gt; Migrate from scheduler to batch&lt;/h3&gt; 
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sharing&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;LogDeletionBatch&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;implements&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;Batchable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SObject&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;QueryLocator&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;BatchableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objBC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getQueryLocator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SELECT&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Id&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FROM&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;BatchableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objBC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;delete&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;finish&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;BatchableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objBC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;ApexClass&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;xmlns=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;http://soap.sforce.com/2006/04/metadata&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;apiVersion&amp;gt;&lt;/span&gt;53.0&lt;span class=&#34;nt&#34;&gt;&amp;lt;/apiVersion&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;status&amp;gt;&lt;/span&gt;Active&lt;span class=&#34;nt&#34;&gt;&amp;lt;/status&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/ApexClass&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The scheduler was updated as below. The only thing we need is to execute the batch job with a given batch size. In this example, a default value is specified.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sharing&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;LogDeletionScheduler&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;implements&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Schedulable&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SchedulableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objSC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;executeBatch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LogDeletionBatch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+  &lt;h3 id=&#34;wheres-the-benefit&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#wheres-the-benefit&#34; title=&#39;Anchor for: Where&amp;rsquo;s the benefit?.&#39;&gt;&lt;svg aria-hidden=&#34;true&#34;&gt;&lt;use xlink:href=&#34;#hashtag&#34;/&gt;&lt;/svg&gt;&lt;/a&gt; Where&amp;rsquo;s the benefit?&lt;/h3&gt; 
+
+&lt;p&gt;Under the above structure, we don&amp;rsquo;t need the &lt;code&gt;LIMIT&lt;/code&gt; in the SOQL. The batchable will split Logs into many smaller lists and execute the same main logic onto each and every one of them until the last is finished.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    &lt;img
+      
+      loading=&#34;lazy&#34;
+      src=&#34;https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/2021-12-14-08-11-10-image.png&#34;
+      alt=&#34;2021-12-14-08-11-10-image.png&#34;
+    /&gt;
+
+  
+
+&lt;/p&gt;
+
+
+
+
+
+  &lt;h3 id=&#34;good-enough&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#good-enough&#34; title=&#39;Anchor for: Good enough?.&#39;&gt;&lt;svg aria-hidden=&#34;true&#34;&gt;&lt;use xlink:href=&#34;#hashtag&#34;/&gt;&lt;/svg&gt;&lt;/a&gt; Good enough?&lt;/h3&gt; 
+
+&lt;p&gt;It seems the Log deleting job works perfect so far. But what will happen with the further expansion of the business? Some other schedulers and batch jobs will be included into the very same org. There could be a scenario where many batch jobs are working at the same time. Each of them handles their own business, of course. For example, some jobs will be executing insanely during midnight when no end user is accessing the site. Another issue comes up again with Salesforce limitations.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;You&amp;rsquo;ve exceeded the limit of 100 jobs in the flex queue for org 00D5f000006tSmL. Wait for some of your batch jobs to finish before adding more. To monitor and reorder jobs, use the Apex Flex Queue page in Setup.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    &lt;img
+      
+      loading=&#34;lazy&#34;
+      src=&#34;https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/image-20211214214455809.png&#34;
+      alt=&#34;image-20211214214455809&#34;
+    /&gt;
+
+  
+
+&lt;/p&gt;
+&lt;p&gt;So, we are not allowed to run batch jobs as many as we want. Resource is limited, which is a key point under the multi-tenant architecture.&lt;/p&gt;
+&lt;p&gt;The most severe one in the above three limitations is the first because the batch jobs out of the range will fail instead of waiting in a queue.&lt;/p&gt;
+
+
+
+
+
+  &lt;h2 id=&#34;queueable-for-processing&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#queueable-for-processing&#34; title=&#39;Anchor for: Queueable for processing.&#39;&gt;&lt;svg aria-hidden=&#34;true&#34;&gt;&lt;use xlink:href=&#34;#hashtag&#34;/&gt;&lt;/svg&gt;&lt;/a&gt; Queueable for processing&lt;/h2&gt; 
+
+&lt;blockquote&gt;
+&lt;p&gt;We all have different parts to play.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;With all said above around a batch, it does well in data splitting but not handling. Here comes another important interface, Queueable. As the name implies, it queues jobs. Compared with two stated interfaces, the new one is more flexible. The limitation of a Queueable is only counting against the whole asynchronous calls. Beyond that, we can usually enqueue jobs with Queueable freely.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+    &lt;img
+      
+      loading=&#34;lazy&#34;
+      src=&#34;https://cdn.jsdelivr.net/gh/lcycug/image-hosting-service@dev/uPic/image-20211216085443878.png&#34;
+      alt=&#34;image-20211216085443878&#34;
+    /&gt;
+
+  
+
+&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sharing&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;LogDeletionQueue&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;implements&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Queueable&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;LogDeletionQueue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;lstLog&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QueueableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objQC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;lstLog&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;isEmpty&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;())&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;delete&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Accordingly, the batch should be updated.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sharing&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;LogDeletionBatch&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;implements&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;Batchable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SObject&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;QueryLocator&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;BatchableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objBC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getQueryLocator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SELECT&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Id&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FROM&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;BatchableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objBC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Log__c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;enqueueJob&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LogDeletionQueue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lstLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;));&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;finish&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Database&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;BatchableContext&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objBC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+  &lt;h2 id=&#34;conclusion&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#conclusion&#34; title=&#39;Anchor for: Conclusion.&#39;&gt;&lt;svg aria-hidden=&#34;true&#34;&gt;&lt;use xlink:href=&#34;#hashtag&#34;/&gt;&lt;/svg&gt;&lt;/a&gt; Conclusion&lt;/h2&gt; 
+
+&lt;p&gt;With all above, we come into a conclusion that the three interfaces woking together will unleash the power of asynchronous solution. By doing so, we can reduce some future code refactoring and diminish some unexpected limitation issues.&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Cron&#34;&gt;cron - Wikipedia&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://freeformatter.com/cron-expression-generator-quartz.html&#34;&gt;Free Online Cron Expression Generator and Describer - FreeFormatter.com&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_gov_limits.htm#transaction_gov_limits_section&#34;&gt;Execution Governors and Limits | Apex Developer Guide | Salesforce Developers&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_batch_interface.htm&#34;&gt;Apex Developer Guide | Using Batch Apex (salesforce.com)&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
     <item>
       <title>KaTex</title>
-      <link>https://blog.lcycug.live/posts/katex/</link>
+      <link>https://lcycug.github.io/posts/katex/</link>
       <pubDate>Sun, 15 Aug 2021 09:33:12 +0800</pubDate>
       
-      <guid>https://blog.lcycug.live/posts/katex/</guid>
+      <guid>https://lcycug.github.io/posts/katex/</guid>
       <description>&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post only covers some cases within the theme&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. The implementations may vary on other platform like DEV&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 &lt;p&gt;This is an inline $\KaTeX$ $a+b=c$&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-latex&#34; data-lang=&#34;latex&#34;&gt;This is an inline &lt;span class=&#34;s&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;\KaTex&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;$&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;$&lt;/span&gt;
@@ -49,10 +402,10 @@ $$&lt;/p&gt;
     
     <item>
       <title>LWC as a Service</title>
-      <link>https://blog.lcycug.live/posts/lwc-as-a-service/</link>
+      <link>https://lcycug.github.io/posts/lwc-as-a-service/</link>
       <pubDate>Fri, 13 Aug 2021 07:53:21 +0800</pubDate>
       
-      <guid>https://blog.lcycug.live/posts/lwc-as-a-service/</guid>
+      <guid>https://lcycug.github.io/posts/lwc-as-a-service/</guid>
       <description>
 
 
@@ -299,29 +652,20 @@ $$&lt;/p&gt;
     </item>
     
     <item>
-      <title>My First Post</title>
-      <link>https://blog.lcycug.live/posts/my-first-post/</link>
-      <pubDate>Sun, 08 Aug 2021 09:11:29 +0800</pubDate>
-      
-      <guid>https://blog.lcycug.live/posts/my-first-post/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>About me</title>
-      <link>https://blog.lcycug.live/about/</link>
+      <link>https://lcycug.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.lcycug.live/about/</guid>
+      <guid>https://lcycug.github.io/about/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Contact</title>
-      <link>https://blog.lcycug.live/contact/</link>
+      <link>https://lcycug.github.io/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.lcycug.live/contact/</guid>
+      <guid>https://lcycug.github.io/contact/</guid>
       <description>&lt;p&gt;That&amp;rsquo;s actually me.
 You can also find me at:
 
