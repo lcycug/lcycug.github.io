@@ -837,7 +837,7 @@
 
   <h3 id="whats-inside-a-batchable"><a class="anchor" href="#whats-inside-a-batchable" title='Anchor for: What&rsquo;s inside a Batchable?.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> What&rsquo;s inside a Batchable?</h3> 
 
-<p>We have to implement three methods inside a batch class. <code>execute</code> is the main part for data handing. <code>finish</code> is usually used in chained jobs where we can invoke jobs one after another. <code>start</code> is used for splitting which returns <code>Iterable</code> to iterate through all of the queried data.</p>
+<p>We have to implement three methods inside a batch class. <code>execute</code> is the main part for data handling. <code>finish</code> is usually used in chained jobs where we can invoke jobs one after another. <code>start</code> is used for splitting which returns <code>Iterable</code> to iterate through all of the queried data.</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="n">global</span> <span class="kd">interface</span> <span class="err">/*</span><span class="nc">Database</span><span class="o">.*/</span><span class="n">Batchable</span> 
 <span class="o">{</span>
     <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">param1</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">param2</span><span class="o">);</span>
