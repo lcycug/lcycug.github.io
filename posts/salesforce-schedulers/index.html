@@ -3,7 +3,7 @@
   <head prefix="og: http://ogp.me/ns#">
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="Hugo 0.91.0">
+<meta name="generator" content="Hugo 0.91.1">
 <meta name="theme" content="Color Your World -- gitlab.com/rmaguiar/hugo-theme-color-your-world">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
@@ -489,7 +489,7 @@
       "inLanguage": "en",
       "datePublished": "2021-08-16",
       "dateModified": "2021-08-16",
-      "wordCount" : "1153",
+      "wordCount" : "1183",
       "publisher": {
         "@type": "Person",
         "name": "Sean Lee"
@@ -704,7 +704,7 @@
 
 
 <p>TL;DR</p>
-<p>The post tries to illustrate the benefits of adopting  <strong>S</strong>chedulable-<strong>B</strong>atchable-<strong>Q</strong>ueueable structure to handle massive dataset. Schedulable focuses on scheduling, batchable does splitting, and queueable does executing.</p>
+<p>The post tries to illustrate the benefits of adopting Schedulable-Batchable-Queueable structure to handle massive dataset. Schedulable focuses on scheduling, batchable does splitting, and queueable does executing.</p>
 
 
 
@@ -713,8 +713,8 @@
   <h2 id="introduction"><a class="anchor" href="#introduction" title='Anchor for: Introduction.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Introduction</h2> 
 
 <p>We usually need to schedule some jobs within our Salesforce orgs to execute some specific piece of logic at some given time.</p>
-<p>The basic use case for this might be deleting custom logs to release some space to have new ones inserted into the database. Say, we only keep the very near 30 days logs which means we will execute deletion every day to remove logs generated 30 days ago.</p>
-<p>Let&rsquo;s presume what we have now is a small start-up business org where we have thousands of logs daily. We can delete all of them within a scheduler like below.</p>
+<p>The basic use case for this might be deleting custom logs on schedule to release space to have new ones inserted into the database. Say, we only keep the very near 30 days logs which means we will execute deletion every day to remove logs generated 30 days ago.</p>
+<p>Let&rsquo;s presume what we have now is a small start-up business org where we have thousands of logs daily. We can delete all of them within a standalone scheduler.</p>
 
 
 
@@ -722,13 +722,13 @@
 
   <h2 id="a-standalone-scheduler"><a class="anchor" href="#a-standalone-scheduler" title='Anchor for: A Standalone Scheduler.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> A Standalone Scheduler</h2> 
 
-<p>Here we have a very simple standalone scheduler with only one line in the block of the main method of a scheduler.</p>
+<p>Here we have a very simple scheduler with only one line in the block of the main method of a scheduler.</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">with</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">LogDeletionScheduler</span> <span class="kd">implements</span> <span class="n">Schedulable</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">SchedulableContext</span> <span class="n">objSC</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">delete</span> <span class="o">[</span><span class="n">SELECT</span> <span class="n">Id</span> <span class="n">FROM</span> <span class="n">Log__c</span> <span class="n">LIMIT</span> <span class="n">10000</span><span class="o">];</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div><p>For the Cron<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" title="See footnotes." role="doc-noteref">1</a></sup> Expression during we schedule the job, some online resources can help for it, like this site<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" title="See footnotes." role="doc-noteref">2</a></sup>.</p>
+</code></pre></div><p>We use <code>System.schedule</code> to have a new job scheduled. For the Cron<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" title="See footnotes." role="doc-noteref">1</a></sup> Expression before we schedule the job, some online resources can help for it, like this site<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" title="See footnotes." role="doc-noteref">2</a></sup>.</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="n">global</span> <span class="kd">class</span> <span class="err">/*</span><span class="nc">System</span><span class="o">.*/</span><span class="n">System</span> 
 <span class="o">{</span>
   <span class="c1">// ...
@@ -737,9 +737,9 @@
   <span class="o">}</span>
   <span class="c1">// ...
 </span><span class="c1"></span><span class="o">}</span>
-</code></pre></div><p>We schedule it at mid-night in this way.</p>
+</code></pre></div><p>Now, we schedule it at mid-night in with the script below.</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="n">System</span><span class="o">.</span><span class="na">schedule</span><span class="o">(</span><span class="err">&#39;</span><span class="n">LogDeletionScheduler</span><span class="err">&#39;</span><span class="o">,</span> <span class="err">&#39;</span><span class="n">0</span> <span class="n">0</span> <span class="n">0</span> <span class="o">*</span> <span class="o">*</span> <span class="o">?</span><span class="err">&#39;</span><span class="o">,</span> <span class="k">new</span> <span class="n">LogDeletionScheduler</span><span class="o">());</span>
-</code></pre></div><p>Let&rsquo;s test it in a testing class.</p>
+</code></pre></div><p>Let&rsquo;s test it in a test class.</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="nd">@IsTest</span>
 <span class="kd">private</span> <span class="kd">class</span> <span class="nc">LogDeletionSchedulerTest</span> <span class="o">{</span>
     <span class="nd">@TestSetup</span>
@@ -791,10 +791,7 @@
   
 
 </p>
-<p>In this example, we presumed and affirmed  that we would only have thousands of Logs to handle. We used a <code>LIMIT</code> here to prevent hitting limitation of the DML.</p>
-<p>Along with the expansion of our business, we have to handle tens of thousands of logs every month. Perhaps we can delete them on a weekly basis. In this post, we don&rsquo;t want to concern about the volume of Logs which reckon on business. We just want a scheduled job to handle all of them monthly whatever the volume of Logs is.</p>
-<p>So what will happen if we don&rsquo;t change our code when the size of logs is greater than 10, 000 in one month?</p>
-<p>Thanks to the <code>LIMIT</code> in the SOQL, the job won&rsquo;t fail. But the job itself can delete only 10, 000 Logs for now. Removing <code>LIMIT</code> will crash the job because of limitation defined by Salesforce<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" title="See footnotes." role="doc-noteref">3</a></sup>.</p>
+<p>In this example, we affirmed that we would only have thousands of Logs to handle daily. With the scheduler, a <code>LIMIT</code> is appended to prevent hitting the limitation of DML.</p>
 <p>
 
 
@@ -824,7 +821,8 @@
   
 
 </p>
-<p>What about introducing <code>ORDER BY CreatedDate ASC</code> before <code>LIMIT 10000</code>? Well, that will delete the oldest 10, 000 Logs, but the question still remains. We cannot delete all of them at this point.</p>
+<p>Along with the expansion of our business, we have to deal with tens of thousands of logs every day. Perhaps we can delete them on a shorter basis, such as hourly. In this post, we don&rsquo;t want to concern about the volume of Logs which reckon on business. We just want a scheduled job to handle all of them daily whatever the volume of Logs is. Besides, an hourly scheduled job may be more sophisticated than a daily one when we try to schedule them.</p>
+<p>So what will happen if we don&rsquo;t change our code when the size of logs is greater than 10, 000 in a day? Thanks to the <code>LIMIT</code> in the SOQL, the job won&rsquo;t fail. But the job itself can delete only 10, 000 Logs for now. Removing <code>LIMIT</code> will crash the job because of limitation defined by Salesforce<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" title="See footnotes." role="doc-noteref">3</a></sup>. What about introducing <code>ORDER BY CreatedDate ASC</code> before <code>LIMIT 10000</code>? Well, that will delete the oldest 10, 000 Logs, but the question still remains. We cannot delete all of them at this point.</p>
 
 
 
@@ -840,7 +838,7 @@
 
   <h3 id="whats-inside-a-batchable"><a class="anchor" href="#whats-inside-a-batchable" title='Anchor for: What&rsquo;s inside a Batchable?.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> What&rsquo;s inside a Batchable?</h3> 
 
-<p>We have to implement three methods inside a batch class. <code>execute</code> is the main part for data handling. <code>finish</code> is usually used in chained jobs where we can invoke jobs one after another. <code>start</code> is used for splitting which returns <code>Iterable</code> to iterate through all of the queried data.</p>
+<p>We have to implement three methods inside a batch class. <code>execute</code> is the main part for data handling. <code>finish</code> is usually used in chained jobs where we can invoke jobs one after another. <code>start</code> is used for splitting which returns an <code>Iterable</code> to iterate through all of the queried data.</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="n">global</span> <span class="kd">interface</span> <span class="err">/*</span><span class="nc">Database</span><span class="o">.*/</span><span class="n">Batchable</span> 
 <span class="o">{</span>
     <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">param1</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">param2</span><span class="o">);</span>
@@ -869,12 +867,7 @@
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">finish</span><span class="o">(</span><span class="n">Database</span><span class="o">.</span><span class="na">BatchableContext</span> <span class="n">objBC</span><span class="o">)</span> <span class="o">{</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div><div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span class="nt">&lt;ApexClass</span> <span class="na">xmlns=</span><span class="s">&#34;http://soap.sforce.com/2006/04/metadata&#34;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;apiVersion&gt;</span>53.0<span class="nt">&lt;/apiVersion&gt;</span>
-    <span class="nt">&lt;status&gt;</span>Active<span class="nt">&lt;/status&gt;</span>
-<span class="nt">&lt;/ApexClass&gt;</span>
-</code></pre></div><p>The scheduler was updated as below. The only thing we need is to execute the batch job with a given batch size. In this example, a default value is specified.</p>
+</code></pre></div><p>The scheduler was updated accordingly as below. The only thing we need in a scheduler is to execute the batch job with a given batch size. In this example, a default value is specified.</p>
 <div class="highlight"><pre aria-label="Box containing code sample." tabindex=0 class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">with</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">LogDeletionScheduler</span> <span class="kd">implements</span> <span class="n">Schedulable</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">SchedulableContext</span> <span class="n">objSC</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">Database</span><span class="o">.</span><span class="na">executeBatch</span><span class="o">(</span><span class="k">new</span> <span class="n">LogDeletionBatch</span><span class="o">(),</span> <span class="n">200</span><span class="o">);</span>
@@ -887,7 +880,7 @@
 
   <h3 id="wheres-the-benefit"><a class="anchor" href="#wheres-the-benefit" title='Anchor for: Where&rsquo;s the benefit?.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Where&rsquo;s the benefit?</h3> 
 
-<p>Under the above structure, we don&rsquo;t need the <code>LIMIT</code> in the SOQL. The batchable will split Logs into many smaller lists and execute the same main logic onto each and every one of them until the last is finished.</p>
+<p>Under the above structure, we don&rsquo;t need the <code>LIMIT</code> in the SOQL. The batchable will split Logs into many smaller lists and execute the same logic onto each and every one of them until the last is finished.</p>
 <p>
 
 
@@ -924,7 +917,7 @@
 
   <h3 id="good-enough"><a class="anchor" href="#good-enough" title='Anchor for: Good enough?.'><svg aria-hidden="true"><use xlink:href="#hashtag"/></svg></a> Good enough?</h3> 
 
-<p>It seems the Log deleting job works perfect so far. But what will happen with the further expansion of the business? Some other schedulers and batch jobs will be included into the very same org. There could be a scenario where many batch jobs are working at the same time. Each of them handles their own business, of course. For example, some jobs will be executing insanely during midnight when no end user is accessing the site. Another issue comes up again with Salesforce limitations.</p>
+<p>It seems the Log deleting job works perfect so far. But what will happen with the further expansion of the business? Some other schedulers and batch jobs will be included into the very same org. There could be a scenario where many batch jobs are working at the same time. Each of them handles their own business, of course. For example, some jobs will be executed insanely during midnight when no end user is accessing the site. Another issue comes up again with Salesforce limitations.</p>
 <blockquote>
 <p>You&rsquo;ve exceeded the limit of 100 jobs in the flex queue for org 00D5f000006tSmL. Wait for some of your batch jobs to finish before adding more. To monitor and reorder jobs, use the Apex Flex Queue page in Setup.</p>
 </blockquote>
@@ -957,8 +950,7 @@
   
 
 </p>
-<p>So, we are not allowed to run batch jobs as many as we want. Resource is limited, which is a key point under the multi-tenant architecture.</p>
-<p>The most severe one in the above three limitations is the first because the batch jobs out of the range will fail instead of waiting in a queue.</p>
+<p>We are not allowed to run batch jobs as many as we want. Resource is limited, which is a key point under the multi-tenant architecture. The most severe one in the above three limitations is the first because the batch jobs out of the range will fail instead of waiting in a queue.</p>
 
 
 
